@@ -7,6 +7,8 @@ const grayMatter = require('gray-matter');
 const app = express();
 const port = 3333;
 
+directoryTemplate = path.join(__dirname, '_templates/directory.html');
+
 // NOTES
 const notesPath = path.join(__dirname, 'content/notes');
 const notesTemplate = path.join(__dirname, '_templates/note.html');
@@ -63,7 +65,6 @@ app.get('/notes', (req, res) => {
 		</html>
 	`);
 });
-
   
 app.get('/notes/:filename', async (req, res) => {
 	const { filename } = req.params;
@@ -90,6 +91,81 @@ app.get('/notes/:filename', async (req, res) => {
 	});
 });
 
+// BOOKMARKS
+const bookmarksPath = path.join(__dirname, 'content/bookmarks');
+const bookmarksTemplate = path.join(__dirname, '_templates/note.html');
+
+app.get('/bookmarks', (req, res) => {
+	const notesFiles = fs.readdirSync(bookmarksPath);
+	// Notes will be grouped by tag
+	const tagSections = {};
+
+	for (const file of notesFiles) {
+		const filePath = path.join(bookmarksPath, file);
+		if (fs.statSync(filePath).isDirectory()) continue;
+		const noteContents = fs.readFileSync(filePath, 'utf-8');
+		const { data } = grayMatter(noteContents);
+
+		// Get the tags as an array, thanks GPT
+		const tags = Array.isArray(data.tags) ? data.tags : (data.tags ? data.tags.split(',').map(tag => tag.trim()) : []);
+
+		tags.forEach(tag => {
+			if (!tagSections[tag]) {
+				tagSections[tag] = [];
+			}
+			tagSections[tag].push({"file": file, "title": data.title});
+		})
+	}
+
+	let sectionsHTML = '';
+
+    for (const tag of Object.keys(tagSections)) {
+      sectionsHTML += `<section>`;
+      sectionsHTML += `<h2>${tag}</h2>`;
+      sectionsHTML += `<ul>`;
+      
+      for (const note of tagSections[tag]) {
+        sectionsHTML += `<li><a href="/bookmarks/${path.basename(note["file"], '.md')}">${note["title"]}</a></li>`;
+      }
+
+      sectionsHTML += `</ul>`;
+      sectionsHTML += `</section>`;
+    }
+
+	let templateContent = fs.readFileSync(directoryTemplate, 'utf-8');
+	let updatedTemplate = templateContent
+		.replace('<h1></h1>', '<h1>Bookmarks</h1>')
+		.replace('<ul></ul>', sectionsHTML);
+
+	res.send(updatedTemplate);
+});
+
+  
+app.get('/bookmarks/:filename', async (req, res) => {
+	const { filename } = req.params;
+	const filePath = path.join(bookmarksPath, `${filename}.md`);
+	const noteContents = fs.readFileSync(filePath, 'utf-8');
+	const { data, content } = grayMatter(noteContents);
+	const noteName = data.title || filename;
+	const htmlContent = marked.parse(content);
+	
+	fs.readFile(bookmarksTemplate, 'utf-8', (err, templateContent) => {
+		if (err) {
+			res.status(500).send('Internal Server Error');
+			return;
+		}
+
+		// Insert the moodboard name and gallery HTML into the template
+		const updatedTemplate = templateContent
+			.replace('<title id="note-title"></title>', `<title>${noteName}</title>`)
+			.replace('<h1 id="note-name"></h1>', `<h1 id="note-name">${noteName}</h1>\r\n<a href="${data.source}">Original article</a>`)
+			.replace('<div id="markdown"></div>', `<div>${htmlContent}</div>`);
+
+		// Send the updated HTML
+		res.send(updatedTemplate);
+	});
+});
+
 // MOODBOARDS
 const moodboardsDirectory = path.join(__dirname, 'content/moodboards');
 const moodboardsTemplate = path.join(__dirname, '_templates/moodboard.html');
@@ -109,22 +185,14 @@ app.get('/moodboards', (req, res) => {
 		const moodboardList = moodboards
 			.map(moodboard => `<li><a href="/moodboards/${moodboard}">${moodboard}</a></li>`)
 			.join('');
+
+		let templateContent = fs.readFileSync(directoryTemplate, 'utf-8');
+		let updatedTemplate = templateContent
+			.replace('<h1></h1>', '<h1>Moodboards</h1>')
+			.replace('<ul></ul>', `<ul>${moodboardList}</ul>`);
 	
 		// Render the HTML list
-		res.send(`
-			<!DOCTYPE html>
-			<html lang="en">
-			<head>
-				<meta charset="UTF-8">
-				<meta name="viewport" content="width=device-width, initial-scale=1.0">
-				<title>Moodboards</title>
-			</head>
-			<body>
-				<h1>Moodboards</h1>
-				<ul>${moodboardList}</ul>
-			</body>
-			</html>
-		`);
+		res.send(updatedTemplate);
 	});
 });
 
@@ -164,6 +232,8 @@ app.get('/moodboards/:moodboardName', (req, res) => {
 	  	});
 	});
 });
+
+app.use(express.static("public"));
 
 app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/index.html');
