@@ -8,23 +8,30 @@ const app = express();
 const port = 3333;
 
 const contentPath = path.join(__dirname, '/content');
-directoryTemplate = path.join(__dirname, '_templates/directory.html');
+const directoryTemplate = path.join(__dirname, '_templates/directory.html');
+const fileTemplate = path.join(__dirname, "_templates/view.html");
 
-app.get('/', (req, res) => {
-    let homePage = fs.readFileSync(__dirname + "/index.html", 'utf-8');
+function getNavBar() {
     let root = fs.readdirSync(contentPath);
     let navBar = '';
 
+    navBar += '<nav>\n<ul>';
     for (let dir of root)
     {
         let location = path.join(contentPath, dir);
         if (fs.lstatSync(location).isDirectory()) {
-            navBar += `<li><a href="/${dir}">${dir}</a></li>`;
+            navBar += `\n<li><a href="/${dir}">${dir}</a></li>`;
         }
     }
+    navBar += '\n</ul>\n</nav>';
 
-    homePage = homePage.replace('<ul id="content-directory"></ul>', `<ul id="content-directory">${navBar}</ul>`);
+    return navBar;
+}
 
+app.get('/', (req, res) => {
+    let homePage = fs.readFileSync(__dirname + "/index.html", 'utf-8');
+
+    homePage = homePage.replace('{{nav}}', getNavBar());
 	res.send(homePage);
 });
 
@@ -50,11 +57,26 @@ app.get('/:location', (req, res) => {
 
         // Go through generic files
         for (let file of contents) {
+            let filePath = path.join(location, file);
+            let fullPath = path.join(contentPath, filePath);
+
             if (file.endsWith('.md')) {
                 notesFiles.push(file);
                 continue;
             }
-            filesList += `\n<li><a href="/view/${path.join(locationPath, file)}">${file}</a></li>`;
+
+            filesList += `\n<li><a href="/view/${filePath}">`;
+            
+            if (fs.lstatSync(fullPath).isDirectory()) {
+                let firstFile = fs.readdirSync(fullPath)[0];
+                let previewPath = path.join(filePath, firstFile);
+
+                filesList += `\n<figure><img src="${previewPath}"><figcaption>${file}</figcaption></figure>`;
+            } else {
+                filesList += file;
+            }
+
+            filesList += '</a></li>';
         }
 
         let tagSections = {};
@@ -85,7 +107,7 @@ app.get('/:location', (req, res) => {
             sectionsHTML += `<ul>`;
             
             for (let note of tagSections[tag]) {
-            sectionsHTML += `<li><a href="/view/${location}/${path.basename(note["file"], '.md')}">${note["title"]}</a></li>`;
+            sectionsHTML += `<li><a href="/view/${location}/${note["file"]}">${note["title"]}</a></li>`;
             }
 
             sectionsHTML += `</ul>`;
@@ -93,8 +115,9 @@ app.get('/:location', (req, res) => {
         }
 
         template = template
-            .replace('{{title}}', `<h1>${location}</h1>`)
-            .replace('<ul id="location-directory"></ul>', `<ul id="location-directory">${filesList}</ul>`)
+            .replace('{{nav}}', getNavBar())
+            .replaceAll('{{title}}', `${location}`)
+            .replace('{{directory-list}}', `${filesList}`)
             .replace('{{notes}}', sectionsHTML);
 
         res.send(template);
@@ -102,11 +125,53 @@ app.get('/:location', (req, res) => {
 });
 
 app.get('/view/*', (req, res) => {
-    let filename = req.params[0];
-    res.send(filename);
-})
+    let itemName = req.params[0];
+    let fullPath = path.join(contentPath, itemName);
+    let template = fs.readFileSync(fileTemplate, 'utf-8');
+    let title = '';
+    let viewContents = '';
+
+    if (fs.lstatSync(fullPath).isDirectory()) {
+        let files = fs.readdirSync(fullPath);
+
+        // Put all images into a list
+        viewContents += "\n<ul>";
+        for (let file of files) {
+            if (file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif")) {
+                viewContents += `\n<li><img src="/${path.join(itemName, file)}"></li>`;
+            }
+        }
+        viewContents += "\n</ul>";
+        title = itemName;
+    } else {
+        let fileContents = fs.readFileSync(fullPath, 'utf-8');
+        let { data, content } = grayMatter(fileContents);
+        let htmlContent = marked.parse(content);
+        
+        title = data.title || itemName;
+        viewContents += `<section>${htmlContent}</section>`;
+    }
+    
+    template = template
+        .replace('{{nav}}', getNavBar())
+        .replaceAll('{{title}}', title)
+        .replace('{{content}}', viewContents);
+    
+    res.send(template);
+});
+
+
+// TODO: file upload in image directories
+app.get('/upload/*', (req, res) => {
+
+});
+
+app.post('/post/*', (req, res) => {
+    const postData = req.body;
+});
 
 app.use(express.static("public"));
+app.use(express.static(contentPath));
 
 app.listen(port, () => {
 	console.log(`plica-garden is running at http://localhost:${port}`);
