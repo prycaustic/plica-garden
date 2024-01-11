@@ -3,7 +3,7 @@ title: Example
 tags: test-tag
 ---
 
-# Markdown: Syntax
+## Markdown: Syntax
 
 *   [Overview](#overview)
     *   [Philosophy](#philosophy)

@@ -106,16 +106,16 @@ app.get('/:location', (req, res) => {
         let sectionsHTML = '';
 
         for (let tag of Object.keys(tagSections)) {
-            sectionsHTML += `<section>`;
-            sectionsHTML += `<h2>${tag}</h2>`;
-            sectionsHTML += `<ul>`;
+            sectionsHTML += `\n<section>`;
+            sectionsHTML += `\n<h2>${tag}</h2>`;
+            sectionsHTML += `\n<p>\n<ul>`;
             
             for (let note of tagSections[tag]) {
-            sectionsHTML += `<li><a href="/view/${location}/${note["file"]}">${note["title"]}</a></li>`;
+            sectionsHTML += `\n<li><a href="/view/${location}/${note["file"]}">${note["title"]}</a></li>`;
             }
 
-            sectionsHTML += `</ul>`;
-            sectionsHTML += `</section>`;
+            sectionsHTML += `\n</ul>\n</p>`;
+            sectionsHTML += `\n</section>`;
         }
 
         template = template
