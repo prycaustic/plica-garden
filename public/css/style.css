@@ -48,8 +48,7 @@ html, body {
 
 body {
 	display: grid;
-	grid-template-columns: [full-start] 1fr [content-start] 30rem [content-end] 1fr [full-end];
-	grid-gap: 1rem;
+	grid-template-columns: [full-start] 1fr [content-start] 32rem [content-end] 1fr [full-end];
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -73,6 +72,7 @@ header {
 }
 
 nav ul {
+	float: right;
     width: 12rem;
 }
 
@@ -84,10 +84,16 @@ nav a {
     display: block;
     padding: 0.5rem;
     border: 1px dotted black;
+	color: black;
+}
+
+nav #current {
+	background-color: lightgrey;
 }
 
 main {
     grid-column: content;
+	padding: 1rem;
 }
 
 main a {

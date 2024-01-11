@@ -11,7 +11,7 @@ const contentPath = path.join(__dirname, '/content');
 const directoryTemplate = path.join(__dirname, '_templates/directory.html');
 const fileTemplate = path.join(__dirname, "_templates/view.html");
 
-function getNavBar() {
+function getNavBar(currentLocation) {
     let root = fs.readdirSync(contentPath);
     let navBar = '';
 
@@ -20,7 +20,11 @@ function getNavBar() {
     {
         let location = path.join(contentPath, dir);
         if (fs.lstatSync(location).isDirectory()) {
-            navBar += `\n<li><a href="/${dir}">${dir}</a></li>`;
+            if (location.endsWith(currentLocation)) {
+                navBar += `\n<li><a id="current" href="/${dir}">${dir}</a></li>`;
+            } else {
+                navBar += `\n<li><a href="/${dir}">${dir}</a></li>`;
+            }
         }
     }
     navBar += '\n</ul>\n</nav>';
@@ -31,7 +35,7 @@ function getNavBar() {
 app.get('/', (req, res) => {
     let homePage = fs.readFileSync(__dirname + "/index.html", 'utf-8');
 
-    homePage = homePage.replace('{{nav}}', getNavBar());
+    homePage = homePage.replace('{{nav}}', getNavBar(req.params[0]));
 	res.send(homePage);
 });
 
@@ -115,7 +119,7 @@ app.get('/:location', (req, res) => {
         }
 
         template = template
-            .replace('{{nav}}', getNavBar())
+            .replace('{{nav}}', getNavBar(location))
             .replaceAll('{{title}}', `${location}`)
             .replace('{{directory-list}}', `${filesList}`)
             .replace('{{notes}}', sectionsHTML);
@@ -153,7 +157,7 @@ app.get('/view/*', (req, res) => {
     }
     
     template = template
-        .replace('{{nav}}', getNavBar())
+        .replace('{{nav}}', getNavBar(itemName.split("/")[0]))
         .replaceAll('{{title}}', title)
         .replace('{{content}}', viewContents);
     
