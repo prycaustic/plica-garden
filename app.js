@@ -108,7 +108,7 @@ app.get('/:location', (req, res) => {
         for (let tag of Object.keys(tagSections)) {
             sectionsHTML += `\n<section>`;
             sectionsHTML += `\n<h2>${tag}</h2>`;
-            sectionsHTML += `\n<p>\n<ul>`;
+            sectionsHTML += `\n<p>\n<ul class="link-list">`;
             
             for (let note of tagSections[tag]) {
             sectionsHTML += `\n<li><a href="/view/${location}/${note["file"]}">${note["title"]}</a></li>`;
