@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
     let homePage = fs.readFileSync(__dirname + "/index.html", 'utf-8');
 
     homePage = homePage.replace('{{nav}}', getNavBar(req.params[0]));
-	res.send(homePage);
+    res.send(homePage);
 });
 
 app.get('/:location', (req, res) => {
@@ -47,7 +47,7 @@ app.get('/:location', (req, res) => {
 
     fs.lstat(locationPath, (err, stats) => {
         if (err) {
-            res.status(err.code).send(err.message);
+            res.status(err.code);
             return;
         }
 
@@ -150,8 +150,9 @@ app.get('/view/*', (req, res) => {
     } else {
         let fileContents = fs.readFileSync(fullPath, 'utf-8');
         let { data, content } = grayMatter(fileContents);
-        let htmlContent = marked.parse(content);
-        
+        let replacedContent = content.replaceAll(/\[([^\]]+)\]\((\/[^\)]+)\)/g, '[$1](/view$2.md)');
+        let htmlContent = marked.parse(replacedContent);
+
         title = data.title || itemName;
         viewContents += `<section>${htmlContent}</section>`;
     }
@@ -178,5 +179,5 @@ app.use(express.static("public"));
 app.use(express.static(contentPath));
 
 app.listen(port, () => {
-	console.log(`plica-garden is running at http://localhost:${port}`);
+    console.log(`plica-garden is running at http://localhost:${port}`);
 });
