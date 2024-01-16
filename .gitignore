@@ -129,5 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# obsidian notes
-/content/.obsidian
+# Ignore the actual notes dumbass
+content/
