@@ -61,6 +61,7 @@ app.get('/:location', (req, res) => {
         let notesFiles = [];
 
         // Go through generic files
+        filesList += '\n<ul class="link-list">';
         for (let file of contents) {
             let filePath = path.join(location, file);
             let fullPath = path.join(contentPath, filePath);
@@ -70,20 +71,20 @@ app.get('/:location', (req, res) => {
                 continue;
             }
 
-            filesList += '\n<ul class="link-list">';
             filesList += `\n<li>\n<a href="/view/${filePath}">`;
             
             if (fs.lstatSync(fullPath).isDirectory()) {
                 let firstFile = fs.readdirSync(fullPath)[0];
                 let previewPath = path.join(filePath, firstFile);
 
-                filesList += `\n<figure>\n<img src="${previewPath}">\n<figcaption>${file}</figcaption>\n</figure>`;
+                filesList += `\n<figure>\n<img src="${previewPath}">\n<figcaption>${file.replace('-', ' ')}</figcaption>\n</figure>`;
             } else {
                 filesList += file;
             }
 
-            filesList += '\n</a>\n</li>\n</ul>';
+            filesList += '\n</a>\n</li>';
         }
+        filesList += '\n</ul>';
 
         let tagSections = {};
 
@@ -139,15 +140,23 @@ app.get('/view/*', (req, res) => {
 
     if (fs.lstatSync(fullPath).isDirectory()) {
         let files = fs.readdirSync(fullPath);
+        let numColumns = 4;
+        let columns = Array.from({ length: numColumns }, () => '\n<ul class="image-list">');
 
-        // Put all images into a list
-        viewContents += '\n<ul class="image-list">';
-        for (let file of files) {
+        // Put images into columns
+        viewContents += '\n<section class="moodboard">';
+        files.forEach((file, index) => {
+            let columnIndex = index % numColumns;
+            let listItems = '';
+
             if (file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif")) {
-                viewContents += `\n<li><img src="/${path.join(itemName, file)}" onclick="openModal(this.src)"></li>`;
+                listItems = `\n<li><img src="/${path.join(itemName, file)}" onclick="openModal(this.src)" loading="lazy"></li>`;
             }
-        }
-        viewContents += "\n</ul>";
+
+            columns[columnIndex] += listItems;
+        })
+        columns.forEach((column) => viewContents += column + '\n</ul>');
+        viewContents += '\n</section>';
         title = itemName;
     } else {
         let fileContents = fs.readFileSync(fullPath, 'utf-8');

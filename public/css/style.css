@@ -70,13 +70,23 @@ h6 { font-size: 0.67rem; }
 
 p { margin-bottom: 1rem; }
 
+img {
+	max-width: 100%;
+	height: auto;
+	font-style: italic;
+	vertical-align: middle;
+}
+
 header {
     grid-column: full;
 }
 
 nav ul {
+	position: sticky;
+	top: 1rem;
 	float: right;
     width: 12rem;
+	margin-right: 1rem;
 }
 
 nav li {
@@ -105,12 +115,7 @@ main a {
     color: black;
 }
 
-img {
-    width: 100%;
-}
-
-.link-list,
-.image-list {
+.link-list {
 	column-count: auto;
 	column-width: 12rem;
 	column-gap: 0.5rem;
@@ -127,6 +132,25 @@ img {
 .link-list li a {
 	text-decoration: none;
 	display: block;
+}
+
+.link-list figcaption {
+	padding: 0.25rem 0;
+	text-transform: uppercase;
+}
+
+.moodboard {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+	grid-gap: 0.5rem;
+}
+
+.image-list li {
+	margin-bottom: 0.5rem;
+}
+
+.image-list img {
+	border-radius: 0.2rem;
 }
 
 /* IMAGE MODALS */
