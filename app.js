@@ -19,6 +19,7 @@ function getNavBar(currentLocation) {
     for (let dir of root)
     {
         let location = path.join(contentPath, dir);
+        if (dir.startsWith('.')) continue;
         if (fs.lstatSync(location).isDirectory()) {
             if (location.endsWith(currentLocation)) {
                 navBar += `\n<li><a id="current" href="/${dir}">${dir}</a></li>`;
@@ -69,18 +70,19 @@ app.get('/:location', (req, res) => {
                 continue;
             }
 
-            filesList += `\n<li><a href="/view/${filePath}">`;
+            filesList += '\n<ul class="link-list">';
+            filesList += `\n<li>\n<a href="/view/${filePath}">`;
             
             if (fs.lstatSync(fullPath).isDirectory()) {
                 let firstFile = fs.readdirSync(fullPath)[0];
                 let previewPath = path.join(filePath, firstFile);
 
-                filesList += `\n<figure><img src="${previewPath}"><figcaption>${file}</figcaption></figure>`;
+                filesList += `\n<figure>\n<img src="${previewPath}">\n<figcaption>${file}</figcaption>\n</figure>`;
             } else {
                 filesList += file;
             }
 
-            filesList += '</a></li>';
+            filesList += '\n</a>\n</li>\n</ul>';
         }
 
         let tagSections = {};
@@ -139,10 +141,10 @@ app.get('/view/*', (req, res) => {
         let files = fs.readdirSync(fullPath);
 
         // Put all images into a list
-        viewContents += "\n<ul>";
+        viewContents += '\n<ul class="image-list">';
         for (let file of files) {
             if (file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif")) {
-                viewContents += `\n<li><img src="/${path.join(itemName, file)}"></li>`;
+                viewContents += `\n<li><img src="/${path.join(itemName, file)}" onclick="openModal(this.src)"></li>`;
             }
         }
         viewContents += "\n</ul>";

@@ -109,7 +109,8 @@ img {
     width: 100%;
 }
 
-.link-list {
+.link-list,
+.image-list {
 	column-count: auto;
 	column-width: 12rem;
 	column-gap: 0.5rem;
@@ -126,4 +127,24 @@ img {
 .link-list li a {
 	text-decoration: none;
 	display: block;
+}
+
+/* IMAGE MODALS */
+#modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100dvh;
+	background-color: rgba(0, 0, 0, 0.7);
+	justify-content: center;
+	align-items: center;
+}
+
+#modal-image {
+	width: auto;
+	max-width: 80%;
+	max-height: 80%;
+	margin: 0 auto;
 }

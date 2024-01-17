@@ -9,8 +9,26 @@
 <body>
     {{nav}}
     <main>
+        <aside id="modal">
+            <img id="modal-image" src="">
+        </aside>
         <h1>{{title}}</h1>
         {{content}}
     </main>
+    <script>
+        function openModal(imgSrc) {
+          var modalImg = document.getElementById("modal-image");
+      
+          modalImg.src = imgSrc;
+          modal.style.display = "flex";
+        }
+      
+        window.onclick = function(event) {
+          var modal = document.getElementById("modal");
+          if (event.target === modal) {
+            modal.style.display = "none";
+          }
+        };
+      </script>
 </body>
 </html>
