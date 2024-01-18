@@ -83,6 +83,7 @@ app.get('/:location', (req, res) => {
                 continue;
             }
 
+            if (file.startsWith('.')) continue;
             if (file.startsWith('_assets')) continue;
             
             if (fs.lstatSync(fullPath).isDirectory()) {
