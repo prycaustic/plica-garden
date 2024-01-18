@@ -94,6 +94,24 @@ tr:nth-child(even) {
 	background-color: gainsboro;
 }
 
+code {
+	vertical-align: middle;
+	padding: 0.1rem;
+	font-size: 14px;
+	display: inline-block;
+	border-radius: 0.2rem;
+	background-color: var(--text);
+	color: var(--background);
+	font-family: monospace;
+}
+
+pre > code {
+	padding: 0.5rem;
+	max-width: 100%;
+	overflow-x: scroll;
+	margin-bottom: 0.5rem;
+}
+
 .hidden {
 	display: none !important;
 }
