@@ -13,10 +13,18 @@ const directoryTemplate = path.join(__dirname, '_templates/directory.html');
 const fileTemplate = path.join(__dirname, "_templates/view.html");
 
 function getNavBar(currentLocation) {
+    console.log(currentLocation);
     let root = fs.readdirSync(contentPath);
     let navBar = '';
 
     navBar += '<nav>\n<ul>';
+    // Link for home page
+    if (currentLocation === undefined) {
+        navBar += '\n<li><a id="current" href="/">home</a></li>';
+    } else {
+        navBar += '\n<li><a href="/">home</a></li>';
+    }
+    // Everything else
     for (let dir of root)
     {
         let location = path.join(contentPath, dir);
@@ -140,6 +148,7 @@ app.get('/view/*', (req, res) => {
     let viewContents = '';
 
     if (fs.lstatSync(fullPath).isDirectory()) {
+        // TODO: sort images by modified date
         let files = fs.readdirSync(fullPath);
         let numColumns = 4;
         let columns = Array.from({ length: numColumns }, () => '\n<ul class="image-list">');
