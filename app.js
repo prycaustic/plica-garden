@@ -4,9 +4,13 @@ const path = require('path');
 const marked = require('marked');
 const grayMatter = require('gray-matter');
 const multer = require('multer');
+var favicon = require('serve-favicon')
+
 
 const app = express();
 const port = 3333;
+
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 
 const contentPath = path.join(__dirname, '/content');
 const directoryTemplate = path.join(__dirname, '_templates/directory.html');
