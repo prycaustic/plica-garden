@@ -190,6 +190,7 @@ main a {
 	margin: 0 auto;
 }
 
-body.dragenter #modal {
+body.dragenter #modal,
+body.dragenter .upload-icon {
 	display: flex !important;
 }

@@ -181,15 +181,13 @@ app.get('/view/*', (req, res) => {
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         // Extract relevant part of the URL and construct the destination path
-        const urlParts = req.url.split('/').filter(Boolean);
-        const customPath = path.join('content', ...urlParts);
-        
-        // Create the directory if it doesn't exist
-        const destinationPath = path.join(__dirname, customPath);
+        let urlParts = req.url.replace('/upload', '/content').split('/').filter(Boolean);
+        let destinationPath = path.join(__dirname, ...urlParts);
+
         require('fs').mkdirSync(destinationPath, { recursive: true });
 
         // Call the callback with the custom destination path
-        cb(null, customPath);
+        cb(null, destinationPath);
     },
     filename: (req, file, cb) => {
         // Use the original file name for the uploaded file
@@ -199,7 +197,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post('/upload', upload.single('file'), (req, res) => {
+app.post('/upload/*', upload.single('file'), (req, res) => {
     console.log('File uploaded: ', req.file);
     res.json({ message: 'File uploaded successfully' });
 });

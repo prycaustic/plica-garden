@@ -4,8 +4,8 @@ function handleDrop(files) {
 }
 
 function uploadFile(file) {
-    let urlParts = window.location.pathname.split('/').filter(Boolean);
-    let uploadPath = '/upload/' + urlParts.join('/') + '/';
+    let uploadPath = window.location.pathname.replace('/view', '/upload');
+    console.log(uploadPath);
 
     let formData = new FormData();
     formData.append('file', file);
@@ -17,6 +17,7 @@ function uploadFile(file) {
     .then(response => response.json())
     .then(data => {
         console.log('Upload successful:', data);
+        location.reload();
     })
     .catch(error => {
         console.error('Error during upload: ', error);
