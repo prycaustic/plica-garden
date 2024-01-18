@@ -10,7 +10,7 @@ function uploadFile(file) {
     let formData = new FormData();
     formData.append('file', file);
 
-    fetch('uploadPath', {
+    fetch(uploadPath, {
         method: 'POST',
         body: formData,
     })
