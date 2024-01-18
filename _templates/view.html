@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <title>{{title}}</title>
 </head>
 <body>
@@ -11,23 +12,26 @@
     <main>
         <aside id="modal">
             <img id="modal-image" src="">
+            <i class="fas fa-upload upload-icon" title="Upload"></i>
         </aside>
         <h1>{{title}}</h1>
         {{content}}
     </main>
     <script>
+        let modal = document.getElementById("modal");
+        let modalImg = document.getElementById("modal-image");
+
         function openModal(imgSrc) {
-          var modalImg = document.getElementById("modal-image");
-      
-          modalImg.src = imgSrc;
-          modal.style.display = "flex";
+            modal.classList.remove("hidden");
+            modalImg.src = imgSrc;
+            modalImg.classList.remove("hidden");
         }
-      
+
         window.onclick = function(event) {
-          var modal = document.getElementById("modal");
-          if (event.target === modal) {
-            modal.style.display = "none";
-          }
+            if (event.target === modal) {
+              modal.classList.add("hidden");
+              modalImg.classList.add("hidden");
+            }
         };
     </script>
     <script src="/js/moodboard.js"></script>

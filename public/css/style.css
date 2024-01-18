@@ -77,6 +77,10 @@ img {
 	vertical-align: middle;
 }
 
+.hidden {
+	display: none !important;
+}
+
 header {
     grid-column: full;
 }
@@ -153,9 +157,21 @@ main a {
 	border-radius: 0.2rem;
 }
 
+.upload-icon {
+	display: none;
+	font-size: 4rem;
+	color: white;
+	transition: opacity 0.3s;
+	margin: 0 auto;
+}
+
+.upload-icon:hover {
+	opacity: 0.7;
+}
+
 /* IMAGE MODALS */
 #modal {
-	display: none;
+	display: flex;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -167,8 +183,13 @@ main a {
 }
 
 #modal-image {
+	display: block;
 	width: auto;
 	max-width: 80%;
 	max-height: 80%;
 	margin: 0 auto;
+}
+
+body.dragenter #modal {
+	display: flex !important;
 }
