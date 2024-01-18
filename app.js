@@ -84,7 +84,7 @@ app.get('/:location', (req, res) => {
             if (fs.lstatSync(fullPath).isDirectory()) {
                 let firstFile = fs.readdirSync(fullPath)[0];
                 if (firstFile.endsWith('.md')) continue;
-                if (firstFile.startsWith('.hidden')) continue;
+                if (firstFile.startsWith('_assets')) continue;
                 let previewPath = path.join(filePath, firstFile);
 
                 filesList += `\n<li>\n<a href="/view/${filePath}">`;
