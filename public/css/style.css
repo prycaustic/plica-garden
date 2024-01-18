@@ -164,7 +164,7 @@ main ol, main ul {
 }
 
 main ol {
-	list-style-type: georgian;
+	list-style-type: decimal;
 }
 
 main li {
