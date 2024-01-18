@@ -80,18 +80,20 @@ app.get('/:location', (req, res) => {
                 continue;
             }
 
-            filesList += `\n<li>\n<a href="/view/${filePath}">`;
             
             if (fs.lstatSync(fullPath).isDirectory()) {
                 let firstFile = fs.readdirSync(fullPath)[0];
+                if (firstFile.endsWith('.md')) continue;
+                if (firstFile.startsWith('.hidden')) continue;
                 let previewPath = path.join(filePath, firstFile);
 
+                filesList += `\n<li>\n<a href="/view/${filePath}">`;
                 filesList += `\n<figure>\n<img src="${previewPath}">\n<figcaption>${file.replace('-', ' ')}</figcaption>\n</figure>`;
+                filesList += '\n</a>\n</li>';
             } else {
-                filesList += file;
+                filesList += `\n<li>\n<a href="/view/${filePath}">${file}\n</a>\n</li>`;
             }
 
-            filesList += '\n</a>\n</li>';
         }
         filesList += '\n</ul>';
 
