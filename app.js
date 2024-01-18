@@ -161,10 +161,11 @@ app.get('/view/*', (req, res) => {
         // Put images into columns
         viewContents += '\n<section class="moodboard">';
         files.forEach((file, index) => {
+            let validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
             let columnIndex = index % numColumns;
             let listItems = '';
 
-            if (file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif")) {
+            if (validExtensions.some(ext => file.endsWith(ext))) {
                 listItems = `\n<li><img src="/${path.join(itemName, file)}" onclick="openModal(this.src)" loading="lazy"></li>`;
             }
 
