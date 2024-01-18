@@ -205,6 +205,10 @@ main ol li > ol {
 	grid-gap: 0.5rem;
 }
 
+.image-list {
+	margin-left: 0;
+}
+
 .image-list li {
 	margin-bottom: 0.5rem;
 }
