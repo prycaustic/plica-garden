@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const marked = require('marked');
 const grayMatter = require('gray-matter');
+const multer = require('multer');
 
 const app = express();
 const port = 3333;
@@ -176,10 +177,31 @@ app.get('/view/*', (req, res) => {
     res.send(template);
 });
 
+// TODO: make this upload the file to the correct directory???
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        // Extract relevant part of the URL and construct the destination path
+        const urlParts = req.url.split('/').filter(Boolean);
+        const customPath = path.join('content', ...urlParts);
+        
+        // Create the directory if it doesn't exist
+        const destinationPath = path.join(__dirname, customPath);
+        require('fs').mkdirSync(destinationPath, { recursive: true });
 
-// TODO: file upload in image directories
-app.get('/upload/*', (req, res) => {
+        // Call the callback with the custom destination path
+        cb(null, customPath);
+    },
+    filename: (req, file, cb) => {
+        // Use the original file name for the uploaded file
+        cb(null, file.originalname);
+    },
+});
 
+const upload = multer({ storage });
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    console.log('File uploaded: ', req.file);
+    res.json({ message: 'File uploaded successfully' });
 });
 
 app.post('/post/*', (req, res) => {
