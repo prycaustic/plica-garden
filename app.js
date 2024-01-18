@@ -13,7 +13,6 @@ const directoryTemplate = path.join(__dirname, '_templates/directory.html');
 const fileTemplate = path.join(__dirname, "_templates/view.html");
 
 function getNavBar(currentLocation) {
-    console.log(currentLocation);
     let root = fs.readdirSync(contentPath);
     let navBar = '';
 
