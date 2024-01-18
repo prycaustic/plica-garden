@@ -77,6 +77,10 @@ img {
 	vertical-align: middle;
 }
 
+strong {
+	font-weight: bold;
+}
+
 table, thead, tbody,
 tfoot, tr, th, td {
     border-collapse: collapse;
@@ -152,6 +156,23 @@ main {
 main a {
     text-decoration: underline dotted 2px;
     color: black;
+}
+
+main ol, main ul {
+	margin-left: 1rem;
+	margin-bottom: 0.5rem;
+}
+
+main ol {
+	list-style-type: georgian;
+}
+
+main li {
+	margin-bottom: 0.5rem;
+}
+
+main ol li > ol {
+	list-style-type: lower-roman;
 }
 
 .link-list {
