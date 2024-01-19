@@ -98,7 +98,7 @@ async function deleteFile(button, fileName) {
     console.log(button);
     console.log(fileName);
     let listItem = button.parentNode;
-    let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'?`);
+    let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'? This CANNOT be undone.`);
 
     if (userConfirmed) {
         try {

@@ -13,10 +13,6 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 	--licorice: hsla(324, 50%, 4%, 1);
 }
 
-.hidden {
-	display: none;
-}
-
 /* Default to light theme */
 body {
 	--background: var(--floral-white);
@@ -216,20 +212,22 @@ main ol li > ol {
 }
 
 .image-list li:hover .delete-button {
-	display: block;
+	opacity: 1;
 }
 
 .image-list li .delete-button {
 	position: absolute;
 	top: 0;
 	right: 0;
-	background-color: #ff5555;
+	background-color: #00000085;
 	color: #fff;
 	border: none;
 	padding: 5px 10px;
 	cursor: pointer;
 	font-size: 14px;
-	display: none;
+	opacity: 0;
+	transition: opacity 200ms;
+	display: block;
 }
 
 .image-list li .delete-button:hover {
@@ -285,8 +283,7 @@ main ol li > ol {
 #modal-image {
 	display: block;
 	width: auto;
-	max-width: 80%;
-	max-height: 80%;
+	height: 80%;
 	margin: 0 auto;
 }
 

@@ -168,7 +168,7 @@ app.get('/view/*', (req, res) => {
             let listItem = '';
 
             if (imageExtensions.some(ext => file.endsWith(ext))) {
-                listItem += `\n<li title="${file}">\n<img src="/${path.join(location, file)}" onclick="openImage(this.src)" loading="lazy" alt="${file}"/>`;
+                listItem += `\n<li>\n<img src="/${path.join(location, file)}" onclick="openImage(this.src)" loading="lazy" alt="${file}"/>`;
             }
 
             if (videoExtensions.some(ext => file.endsWith(ext))) {
@@ -176,7 +176,7 @@ app.get('/view/*', (req, res) => {
                 listItem += `\n<p>${file}</p>`;
             }
 
-            listItem += `\n<button class="delete-button" onclick="deleteFile(this, '${path.join(location, file)}')">Delete</button></li>`;
+            listItem += `\n<button class="delete-button" onclick="deleteFile(this, '${path.join(location, file)}')" title="Delete">&#10006;</button></li>`;
 
             columns[columnIndex] += listItem;
         })
