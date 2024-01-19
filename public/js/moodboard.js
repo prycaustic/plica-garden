@@ -120,3 +120,14 @@ async function deleteFile(button, fileName) {
         }
     }
 };
+
+document.addEventListener('contextmenu', (event) => {
+    if (event.target.tagName == 'IMG' && event.target.classList.contains('block-context-menu')) {
+        event.preventDefault();
+        event.target.parentNode.classList.add('hovered');
+    }
+
+    setTimeout(() => {
+        event.target.parentNode.classList.remove('hovered');
+    }, 2000);
+});

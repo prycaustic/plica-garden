@@ -170,7 +170,7 @@ app.get('/view/*', (req, res) => {
             let listItem = '';
 
             if (imageExtensions.some(ext => file.endsWith(ext))) {
-                listItem += `\n<li>\n<img src="/${path.join(location, file)}" onclick="openImage(this.src)" loading="lazy" alt="${file}"/>`;
+                listItem += `\n<li>\n<img class="block-context-menu" src="/${path.join(location, file)}" onclick="openImage(this.src)" loading="lazy" alt="${file}"/>`;
             }
 
             if (videoExtensions.some(ext => file.endsWith(ext))) {
