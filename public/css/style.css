@@ -7,25 +7,25 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 * { box-sizing: border-box; }
 
 :root {
-	--floral-white: hsla(47, 43%, 96%, 1);
-	--pink-lavender: hsla(333, 45%, 76%, 1);
-	--english-violet: hsla(288, 45%, 28%, 1);
-	--licorice: hsla(324, 50%, 4%, 1);
+	--white: hsla(47, 43%, 96%, 1);
+	--accent-light: hsla(333, 45%, 76%, 1);
+	--accent-dark: lightgrey;
+	--black: hsla(324, 50%, 4%, 1);
 }
 
 /* Default to light theme */
 body {
-	--background: var(--floral-white);
-	--text: var(--licorice);
-	--accent: var(--english-violet);
+	--background: var(--white);
+	--text: var(--black);
+	--accent: var(--accent-dark);
 }
 
 /* Enable dark theme if set on system */
 @media (prefers-color-scheme: dark) {
 	body {
-		--background: var(--licorice);
-		--text: var(--floral-white);
-		--accent: var(--pink-lavender);
+		--background: var(--black);
+		--text: var(---white);
+		--accent: var(--accent-light);
 	}
 }
 
@@ -81,9 +81,8 @@ table, thead, tbody,
 tfoot, tr, th, td {
     border-collapse: collapse;
     border-spacing: 0;
-    border-color: var(--text);
     text-align: left;
-	border: 1px solid black;
+	border: 1px solid var(--text);
 }
 
 th, td {
@@ -141,7 +140,7 @@ nav a {
 }
 
 nav #current {
-	background-color: lightgrey;
+	background-color: var(--accent);
 }
 
 main {
@@ -172,6 +171,7 @@ main ol li > ol {
 }
 
 .link-list {
+	margin-left: 0;
 	column-count: auto;
 	column-width: 12rem;
 	column-gap: 0.5rem;
@@ -280,18 +280,41 @@ main ol li > ol {
 	z-index: 999;
 }
 
-#modal-image {
+#modal-image, #modal-video {
 	display: block;
 	width: auto;
-	height: 80%;
+	max-height: 80%;
 	margin: 0 auto;
-}
-
-#modal-video {
-	height: 80%;
 }
 
 body.dragenter #modal,
 body.dragenter .upload-icon {
 	display: flex !important;
+}
+
+@media only screen and (max-width: 767px) {
+	body {
+		display: flex;
+		flex-direction: column;
+	}
+
+	nav ul {
+		position: initial;
+		float: none;
+		top: 0;
+		width: 100vw;
+		padding: 1rem;
+	}
+	
+	nav li {
+		margin-bottom: 0.5rem;
+	}
+	
+	nav a {
+		display: block;
+		padding: 0.5rem;
+		border: 1px dotted var(--text);
+		color: black;
+		text-decoration: none;
+	}
 }

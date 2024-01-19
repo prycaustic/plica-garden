@@ -52,6 +52,7 @@ app.get('/', (req, res) => {
     res.send(homePage);
 });
 
+// TODO: Fix images showing up weird if you put them in one of these pages
 app.get('/:location', (req, res) => {
     let { location } = req.params;
     let locationPath = path.join(contentPath, location);
@@ -146,6 +147,7 @@ app.get('/:location', (req, res) => {
     });
 });
 
+// TODO: Make a button for the file upload so you can have a file selector
 app.get('/view/*', (req, res) => {
     let location = req.params[0];
     let fullPath = path.join(contentPath, location);
