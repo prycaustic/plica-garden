@@ -13,7 +13,7 @@ function openImage(imgSrc) {
     modal.classList.remove('hidden');
     modalImg.classList.remove('hidden');
     modalImg.src = imgSrc;
-}
+};
 
 function openVideo(video) {
     modal.classList.remove('hidden');
@@ -25,7 +25,7 @@ function openVideo(video) {
     clone.removeAttribute('onclick');
     modalVideo = modal.appendChild(clone);
     document.title = getCleanFileName(video.children[0].src);
-}
+};
 
 window.onclick = function(event) {
     if (event.target === modal) {
@@ -92,3 +92,31 @@ window.onload = function() {
         document.body.classList.remove('dragenter');
     });
 }
+
+// File deletions
+async function deleteFile(button, fileName) {
+    console.log(button);
+    console.log(fileName);
+    let listItem = button.parentNode;
+    let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'?`);
+
+    if (userConfirmed) {
+        try {
+            let response = await fetch(`/delete/${fileName}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            let result = await response.text();
+            console.log(result);
+            if (result == 'File deleted successfully') {
+                listItem.remove();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+};

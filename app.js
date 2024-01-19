@@ -147,8 +147,8 @@ app.get('/:location', (req, res) => {
 });
 
 app.get('/view/*', (req, res) => {
-    let itemName = req.params[0];
-    let fullPath = path.join(contentPath, itemName);
+    let location = req.params[0];
+    let fullPath = path.join(contentPath, location);
     let template = fs.readFileSync(fileTemplate, 'utf-8');
     let title = '';
     let viewContents = '';
@@ -168,31 +168,33 @@ app.get('/view/*', (req, res) => {
             let listItem = '';
 
             if (imageExtensions.some(ext => file.endsWith(ext))) {
-                listItem += `\n<li title="${file}"><img src="/${path.join(itemName, file)}" onclick="openImage(this.src)" loading="lazy" alt="${file}"/></li>`;
+                listItem += `\n<li title="${file}">\n<img src="/${path.join(location, file)}" onclick="openImage(this.src)" loading="lazy" alt="${file}"/>`;
             }
 
             if (videoExtensions.some(ext => file.endsWith(ext))) {
-                listItem += `\n<li class="video-with-filename" title="${file}"><video onclick="openVideo(this)"><source src="/${path.join(itemName, file)}" /></video>`;
-                listItem += `\n<p>${file}</p></li>`;
+                listItem += `\n<li class="video-with-filename" title="${file}"><video onclick="openVideo(this)" preload="metadata"><source src="/${path.join(location, file)}" /></video>`;
+                listItem += `\n<p>${file}</p>`;
             }
+
+            listItem += `\n<button class="delete-button" onclick="deleteFile(this, '${path.join(location, file)}')">Delete</button></li>`;
 
             columns[columnIndex] += listItem;
         })
         columns.forEach((column) => viewContents += column + '\n</ul>');
         viewContents += '\n</section>';
-        title = itemName;
+        title = location;
     } else {
         let fileContents = fs.readFileSync(fullPath, 'utf-8');
         let { data, content } = grayMatter(fileContents);
         let replacedContent = content.replaceAll(/\[([^\]]+)\]\((\/[^\)]+)\)/g, '[$1](/view$2.md)');
         let htmlContent = marked.parse(replacedContent);
 
-        title = data.title || itemName;
+        title = data.title || location;
         viewContents += `<section>${htmlContent}</section>`;
     }
     
     template = template
-        .replace('{{nav}}', getNavBar(itemName.split("/")[0]))
+        .replace('{{nav}}', getNavBar(location.split("/")[0]))
         .replaceAll('{{title}}', title)
         .replace('{{content}}', viewContents);
     
@@ -224,8 +226,18 @@ app.post('/upload/*', upload.single('file'), (req, res) => {
     res.json({ message: 'File uploaded successfully' });
 });
 
-app.post('/post/*', (req, res) => {
-    const postData = req.body;
+app.delete('/delete/*', (req, res) => {
+    let filePath = path.join(contentPath, req.params[0]);
+    console.log(filePath);
+
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error(err);
+            return res.status(500);
+        }
+
+        res.status(200).send('File deleted successfully');
+    });
 });
 
 app.use(express.static("public"));

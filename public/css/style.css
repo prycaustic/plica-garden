@@ -210,12 +210,30 @@ main ol li > ol {
 }
 
 .image-list li {
+	position: relative;
+	width: 100%;
 	margin-bottom: 0.5rem;
 }
 
-.image-list .video-with-filename {
-	position: relative;
-	width: 100%;
+.image-list li:hover .delete-button {
+	display: block;
+}
+
+.image-list li .delete-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: #ff5555;
+	color: #fff;
+	border: none;
+	padding: 5px 10px;
+	cursor: pointer;
+	font-size: 14px;
+	display: none;
+}
+
+.image-list li .delete-button:hover {
+	background-color: #cc0000;
 }
 
 .image-list .video-with-filename p {
