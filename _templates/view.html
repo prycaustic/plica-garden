@@ -17,23 +17,6 @@
         <h1>{{title}}</h1>
         {{content}}
     </main>
-    <script>
-        let modal = document.getElementById("modal");
-        let modalImg = document.getElementById("modal-image");
-
-        function openModal(imgSrc) {
-            modal.classList.remove("hidden");
-            modalImg.src = imgSrc;
-            modalImg.classList.remove("hidden");
-        }
-
-        window.onclick = function(event) {
-            if (event.target === modal) {
-              modal.classList.add("hidden");
-              modalImg.classList.add("hidden");
-            }
-        };
-    </script>
     <script src="/js/moodboard.js"></script>
 </body>
 </html>

@@ -1,3 +1,45 @@
+// Image and video viewer
+let modal = document.getElementById('modal');
+let modalImg = document.getElementById('modal-image');
+let originalTitle = document.title;
+
+function getCleanFileName(filePath) {
+    const pathSegments = filePath.split('/');
+    const fileName = decodeURIComponent(pathSegments.pop());
+    return fileName;
+  }
+
+function openImage(imgSrc) {
+    modal.classList.remove('hidden');
+    modalImg.classList.remove('hidden');
+    modalImg.src = imgSrc;
+}
+
+function openVideo(video) {
+    modal.classList.remove('hidden');
+    let clone = video.cloneNode(true);
+    clone.setAttribute('id', 'modal-video');
+    clone.setAttribute('autoplay', 'true');
+    clone.setAttribute('loop', 'true');
+    clone.setAttribute('controls', '');
+    clone.removeAttribute('onclick');
+    modalVideo = modal.appendChild(clone);
+    document.title = getCleanFileName(video.children[0].src);
+}
+
+window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.classList.add('hidden');
+        modalImg.classList.add('hidden');
+
+        let modalVideo = document.getElementById('modal-video');
+        if (modalVideo == null) return;
+        modal.removeChild(modalVideo);
+        document.title = originalTitle;
+    }
+};
+
+// File uploads
 function handleDrop(files) {
     let filesArray = Array.from(files);
     filesArray.forEach(uploadFile);
@@ -26,10 +68,9 @@ function uploadFile(file) {
 
 window.onload = function() {
     let moodboard = document.querySelector('.moodboard');
-    let modal = document.getElementById("modal");
-    let uploadIcon = document.querySelector('.upload-icon');
+
     if (moodboard == null) {
-        console.log("moodboard not found!");
+        console.log('moodboard not found!');
         return;
     }
 

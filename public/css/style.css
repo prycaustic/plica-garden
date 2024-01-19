@@ -70,7 +70,7 @@ h6 { font-size: 0.67rem; }
 
 p { margin-bottom: 1rem; }
 
-img {
+img, video {
 	max-width: 100%;
 	height: auto;
 	font-style: italic;
@@ -248,6 +248,10 @@ main ol li > ol {
 	max-width: 80%;
 	max-height: 80%;
 	margin: 0 auto;
+}
+
+#modal-video {
+	height: 80%;
 }
 
 body.dragenter #modal,

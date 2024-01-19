@@ -162,12 +162,17 @@ app.get('/view/*', (req, res) => {
         // Put images into columns
         viewContents += '\n<section class="moodboard">';
         files.forEach((file, index) => {
-            let validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+            let imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+            let videoExtensions = ['.mp4', '.mov', '.webm'];
             let columnIndex = index % numColumns;
             let listItems = '';
 
-            if (validExtensions.some(ext => file.endsWith(ext))) {
-                listItems = `\n<li><img src="/${path.join(itemName, file)}" onclick="openModal(this.src)" loading="lazy"></li>`;
+            if (imageExtensions.some(ext => file.endsWith(ext))) {
+                listItems = `\n<li><img src="/${path.join(itemName, file)}" onclick="openImage(this.src)" loading="lazy" /></li>`;
+            }
+
+            if (videoExtensions.some(ext => file.endsWith(ext))) {
+                listItems = `\n<li><video onclick="openVideo(this)"><source src="/${path.join(itemName, file)}" /></video></li>`;
             }
 
             columns[columnIndex] += listItems;
