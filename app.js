@@ -163,19 +163,20 @@ app.get('/view/*', (req, res) => {
         viewContents += '\n<section class="moodboard">';
         files.forEach((file, index) => {
             let imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-            let videoExtensions = ['.mp4', '.mov', '.webm'];
+            let videoExtensions = ['.mp4', '.mov', '.mkv', '.m4v', '.webm'];
             let columnIndex = index % numColumns;
-            let listItems = '';
+            let listItem = '';
 
             if (imageExtensions.some(ext => file.endsWith(ext))) {
-                listItems = `\n<li><img src="/${path.join(itemName, file)}" onclick="openImage(this.src)" loading="lazy" /></li>`;
+                listItem += `\n<li title="${file}"><img src="/${path.join(itemName, file)}" onclick="openImage(this.src)" loading="lazy" alt="${file}"/></li>`;
             }
 
             if (videoExtensions.some(ext => file.endsWith(ext))) {
-                listItems = `\n<li><video onclick="openVideo(this)"><source src="/${path.join(itemName, file)}" /></video></li>`;
+                listItem += `\n<li class="video-with-filename" title="${file}"><video onclick="openVideo(this)"><source src="/${path.join(itemName, file)}" /></video>`;
+                listItem += `\n<p>${file}</p></li>`;
             }
 
-            columns[columnIndex] += listItems;
+            columns[columnIndex] += listItem;
         })
         columns.forEach((column) => viewContents += column + '\n</ul>');
         viewContents += '\n</section>';
