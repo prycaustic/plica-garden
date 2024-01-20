@@ -253,6 +253,7 @@ main ol li > ol {
 	border-radius: 0.2rem;
 	overflow: hidden;
 	cursor: pointer;
+	background: linear-gradient(to bottom, #b5ada1, var(--accent));
 }
 
 .media-list li img {
