@@ -15,6 +15,7 @@ function openImage(img) {
     modal.classList.remove('hidden');
     let clone = img.cloneNode(true);
     clone.setAttribute('id', 'modal-image');
+    clone.removeAttribute('onclick');
     modal.appendChild(clone);
     currentItemIndex = parseInt(img.getAttribute('index'));
 };
