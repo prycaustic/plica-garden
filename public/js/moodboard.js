@@ -3,6 +3,7 @@ let modal = document.getElementById('modal');
 let originalTitle = document.title;
 let currentItemIndex = 0;
 let moodboardItems = document.querySelectorAll('[index]');
+let swipeThreshold = 50;
 
 function getCleanFileName(filePath) {
     let pathSegments = filePath.split('/');
@@ -58,22 +59,44 @@ function updateModalContent() {
     }
 };
 
+function showPreviousItem() {
+    if (currentItemIndex > 0) {
+        currentItemIndex--;
+        updateModalContent();
+    }
+}
+
+function showNextItem() {
+    if (currentItemIndex < moodboardItems.length - 1) {
+        currentItemIndex++;
+        updateModalContent();
+    }
+}
+
 addEventListener('keydown', (e) => {
     e.preventDefault();
     if (!modal.classList.contains('hidden')) {
         if (e.key === "ArrowLeft") {
-            if (currentItemIndex > 0) {
-                currentItemIndex--;
-                updateModalContent();
-            }
+            showPreviousItem();
         }
         else if (e.key === "ArrowRight") {
-            if (currentItemIndex < moodboardItems.length - 1) {
-                currentItemIndex++;
-                updateModalContent();
-            }
+            showNextItem();
         }
-        console.log(currentItemIndex);
+    }
+});
+
+modal.addEventListener('touchstart', function (e) {
+    startX = e.touches[0].clientX;
+});
+
+modal.addEventListener('touchend', function (e) {
+    let endX = e.changedTouches[0].clientX;
+    let deltaX = endX - startX;
+
+    if (deltaX > swipeThreshold) {
+        showPreviousItem();
+    } else if (deltaX < -swipeThreshold) {
+        showNextItem();
     }
 });
 
