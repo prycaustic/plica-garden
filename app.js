@@ -17,6 +17,9 @@ const contentPath = path.join(__dirname, '/content');
 const directoryTemplate = path.join(__dirname, '_templates/directory.html');
 const fileTemplate = path.join(__dirname, "_templates/view.html");
 
+const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
+const videoExtensions = ['.mp4', '.mov', '.mkv', '.m4v', '.webm'];
+
 function readdirSyncSorted(dir) {
     let files = fs.readdirSync(dir);
 
@@ -29,6 +32,7 @@ function readdirSyncSorted(dir) {
         .map(file => file.name);
 };
 
+// TODO: Add hidden directories at the bottom and give an option to show them
 function getNavBar(currentLocation) {
     let root = fs.readdirSync(contentPath);
     let navBar = '';
@@ -102,11 +106,15 @@ app.get('/:location', (req, res) => {
             
             if (fs.lstatSync(fullPath).isDirectory()) {
                 let firstFile = readdirSyncSorted(fullPath)[0];
-                if (firstFile.endsWith('.md')) continue;
-                let previewPath = path.join(filePath, firstFile);
+                if (firstFile === undefined) continue;
 
                 filesList += `\n<li>\n<a href="/view/${filePath}">`;
-                filesList += `\n<figure>\n<img src="${previewPath}">\n<figcaption>${file.replace('-', ' ')}</figcaption>\n</figure>`;
+                filesList += `\n<figure>`;
+                if (imageExtensions.some(ext => firstFile.endsWith(ext))) {
+                    let previewPath = path.join(filePath, firstFile);
+                    filesList += `\n<img src="${previewPath}">`;
+                }
+                filesList += `\n<figcaption>${file.replace('-', ' ')}</figcaption>\n</figure>`;
                 filesList += '\n</a>\n</li>';
             } else {
                 filesList += `\n<li>\n<a href="/view/${filePath}">${file}\n</a>\n</li>`;
@@ -175,8 +183,6 @@ app.get('/view/*', (req, res) => {
         viewContents += '\n<section class="moodboard">\n<ul class="image-list">';
         files.forEach((file, index) => {
             let filePath = path.join(location, file);
-            let imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
-            let videoExtensions = ['.mp4', '.mov', '.mkv', '.m4v', '.webm'];
             let listItem = '';
 
             if (imageExtensions.some(ext => file.endsWith(ext))) {
