@@ -25,6 +25,7 @@ function openImage(img) {
 
 function openVideo(video) {
     modal.classList.remove('hidden');
+    currentItemIndex = parseInt(video.getAttribute('index'));
     let clone = video.cloneNode(true);
     clone.setAttribute('id', 'modal-video');
     clone.setAttribute('autoplay', 'true');
@@ -33,8 +34,7 @@ function openVideo(video) {
     clone.removeAttribute('onclick');
     clone.classList.remove('block-context-menu');
     modal.insertBefore(clone, modal.firstChild);
-    currentItemIndex = parseInt(video.getAttribute('index'));
-    modalInfo.innerText = getCleanFileName(video.firstChild.src);
+    modalInfo.innerText = getCleanFileName(clone.children[0].src);
 };
 
 // Hide the modal
