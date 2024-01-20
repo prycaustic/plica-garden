@@ -395,6 +395,10 @@ body.dragenter .upload-icon {
 		min-height: 0;
 		height: auto;
 	}
+
+	.icon.small {
+		font-size: 2.5rem;
+	}
 }
 
 @media (hover: hover) {
