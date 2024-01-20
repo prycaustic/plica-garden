@@ -186,7 +186,9 @@ app.get('/view/*', (req, res) => {
             let listItem = '';
 
             if (imageExtensions.some(ext => file.endsWith(ext))) {
-                let dimensions = sizeOf(path.join(contentPath, filePath));
+                let absolutePath = path.join(contentPath, filePath);
+                let dimensions = sizeOf(absolutePath);
+
                 listItem += `\n<li>\n<img index="${index}" class="block-context-menu" src="/${filePath}" onclick="openImage(this)" loading="lazy" alt="" width="${dimensions.width}" height="${dimensions.height}" />`;
             }
 
