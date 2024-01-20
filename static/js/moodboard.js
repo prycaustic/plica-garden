@@ -174,7 +174,7 @@ function uploadFile(file) {
 };
 
 window.onload = () => {
-    let moodboard = document.querySelector('.moodboard');
+    let moodboard = document.querySelector('#moodboard');
 
     if (moodboard == null) {
         console.log('moodboard not found!');

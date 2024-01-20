@@ -22,7 +22,7 @@
         <section class="content">
             {{content | safe}}
             {% if media_list %}
-            <ul class="media-list">
+            <ul id="moodboard" class="media-list">
                 {% for item in media_list %}
                     {% if 'title' in item %}
                     <li class="video-with-filename" title="{{ item.title }}">
