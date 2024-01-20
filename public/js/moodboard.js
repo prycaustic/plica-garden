@@ -1,5 +1,6 @@
 // Image and video viewer
 let modal = document.getElementById('modal');
+let modalInfo = document.getElementById('modal-info');
 let originalTitle = document.title;
 let currentItemIndex = 0;
 let moodboardItems = document.querySelectorAll('[index]');
@@ -16,8 +17,10 @@ function openImage(img) {
     let clone = img.cloneNode(true);
     clone.setAttribute('id', 'modal-image');
     clone.removeAttribute('onclick');
-    modal.appendChild(clone);
+    clone.classList.remove('block-context-menu');
+    modal.insertBefore(clone, modal.firstChild);
     currentItemIndex = parseInt(img.getAttribute('index'));
+    modalInfo.innerText = getCleanFileName(img.src);
 };
 
 function openVideo(video) {
@@ -28,22 +31,27 @@ function openVideo(video) {
     clone.setAttribute('loop', 'true');
     clone.setAttribute('controls', '');
     clone.removeAttribute('onclick');
-    modal.appendChild(clone);
-    document.title = getCleanFileName(video.children[0].src);
+    clone.classList.remove('block-context-menu');
+    modal.insertBefore(clone, modal.firstChild);
     currentItemIndex = parseInt(video.getAttribute('index'));
+    modalInfo.innerText = getCleanFileName(video.firstChild.src);
 };
 
 // Hide the modal
+function clearModalContents() {
+    let modalImage = document.getElementById('modal-image');
+    let modalVideo = document.getElementById('modal-video');
+
+    if (modalImage != null)
+        modal.removeChild(modalImage);
+    if (modalVideo != null)
+        modal.removeChild(modalVideo);
+}
+
 window.onclick = function(event) {
     if (event.target === modal) {
-        let modalImage = document.getElementById('modal-image');
-        let modalVideo = document.getElementById('modal-video');
+        clearModalContents();
         modal.classList.add('hidden');
-
-        if (modalImage != null)
-            modal.removeChild(modalImage);
-        if (modalVideo != null)
-            modal.removeChild(modalVideo);
         document.title = originalTitle;
     }
 };
@@ -51,8 +59,8 @@ window.onclick = function(event) {
 // Image navigation with arrow keys
 function updateModalContent() {
     let newItem = moodboardItems[currentItemIndex];
-
-    modal.innerHTML = '';
+    
+    clearModalContents();
     if (newItem.tagName === 'IMG') {
         openImage(newItem);
     } else if (newItem.tagName === 'VIDEO') {

@@ -273,6 +273,19 @@ main ol li > ol {
 	z-index: 999;
 }
 
+#modal-info {
+	position: absolute;
+	top: 0;
+	background-color: black;
+	color: white;
+	font-family: monospace;
+	font-size: 14px;
+	opacity: 0;
+	transition: opacity 200ms;
+	margin: 0;
+	width: 100%;
+}
+
 #modal-image, #modal-video {
 	display: block;
 	width: auto;
@@ -319,6 +332,8 @@ body.dragenter .upload-icon {
 }
 
 @media (hover: hover) {
+	#modal-image:hover ~ #modal-info,
+	#modal-video:hover ~ #modal-info,
 	.image-list li:hover .delete-button {
 		opacity: 1;
 	}
