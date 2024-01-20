@@ -73,6 +73,7 @@ img, video {
 	max-width: 100%;
 	height: auto;
 	font-style: italic;
+	text-align: center;
 	vertical-align: middle;
 }
 
@@ -198,13 +199,9 @@ main ol li > ol {
 	text-transform: uppercase;
 }
 
-.moodboard {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
-	grid-gap: 0.5rem;
-}
-
 .image-list {
+	column-count: 4;
+	grid-gap: 0.5rem;
 	user-select: none;
 	margin-left: 0;
 }
@@ -312,6 +309,10 @@ body.dragenter .upload-icon {
 		border: 1px dotted var(--text);
 		color: black;
 		text-decoration: none;
+	}
+
+	.image-list {
+		column-count: 2;
 	}
 }
 

@@ -4,8 +4,9 @@ const path = require('path');
 const marked = require('marked');
 const grayMatter = require('gray-matter');
 const multer = require('multer');
-var favicon = require('serve-favicon')
+const sizeOf = require('image-size');
 
+var favicon = require('serve-favicon')
 
 const app = express();
 const port = 3333;
@@ -169,32 +170,30 @@ app.get('/view/*', (req, res) => {
 
     if (fs.lstatSync(fullPath).isDirectory()) {
         let files = readdirSyncSorted(fullPath);
-        let numColumns = 4;
-        let columns = Array.from({ length: numColumns }, () => '\n<ul class="image-list">');
 
         // Put images into columns
-        viewContents += '\n<section class="moodboard">';
+        viewContents += '\n<section class="moodboard">\n<ul class="image-list">';
         files.forEach((file, index) => {
+            let filePath = path.join(location, file);
             let imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
             let videoExtensions = ['.mp4', '.mov', '.mkv', '.m4v', '.webm'];
-            let columnIndex = index % numColumns;
             let listItem = '';
 
             if (imageExtensions.some(ext => file.endsWith(ext))) {
-                listItem += `\n<li>\n<img class="block-context-menu" src="/${path.join(location, file)}" onclick="openImage(this.src)" loading="lazy" alt="${file}"/>`;
+                let dimensions = sizeOf(path.join(contentPath, filePath));
+                listItem += `\n<li>\n<img class="block-context-menu" src="/${filePath}" onclick="openImage(this.src)" loading="lazy" alt="${file}" width="${dimensions.width}" height="${dimensions.height}" />`;
             }
 
             if (videoExtensions.some(ext => file.endsWith(ext))) {
-                listItem += `\n<li class="video-with-filename" title="${file}"><video onclick="openVideo(this)" preload="metadata"><source src="/${path.join(location, file)}" /></video>`;
+                listItem += `\n<li class="video-with-filename block-context-menu" title="${file}"><video onclick="openVideo(this)" preload="metadata"><source src="/${path.join(location, file)}" /></video>`;
                 listItem += `\n<p>${file}</p>`;
             }
 
-            listItem += `\n<button class="delete-button" onclick="deleteFile(this, '${path.join(location, file)}')" title="Delete">&#10006;</button></li>`;
-
-            columns[columnIndex] += listItem;
+            listItem += `\n<button class="delete-button" onclick="deleteFile(this, '${filePath}')" title="Delete">&#10006;</button></li>`;
+            viewContents += listItem;
         })
-        columns.forEach((column) => viewContents += column + '\n</ul>');
-        viewContents += '\n</section>';
+
+        viewContents += '\n</ul>\n</section>';
         title = location;
     } else {
         let fileContents = fs.readFileSync(fullPath, 'utf-8');
