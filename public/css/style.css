@@ -210,6 +210,8 @@ main ol li > ol {
 	position: relative;
 	width: 100%;
 	margin-bottom: 0.5rem;
+	border-radius: 0.2rem;
+	overflow: hidden;
 }
 
 .image-list li img {
@@ -245,10 +247,6 @@ main ol li > ol {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-}
-
-.image-list img {
-	border-radius: 0.2rem;
 }
 
 .upload-icon {
