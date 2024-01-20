@@ -183,15 +183,15 @@ window.onload = () => {
 
     let moodboardOptions = `<ul id="moodboard-options">
     <li title="Edit moodboard name">
-        <label for="moodboard-edit-name"><i class="icon fas fa-edit small dark"></i><span class="visually-hidden">Edit moodboard name</span></label>
+        <label for="moodboard-edit-name"><span class="icon material-symbols-sharp small dark">edit</span><span class="visually-hidden">Edit moodboard name</span></label>
         <!-- Add a function to edit the moodboard name -->
     </li>
     <li title="Toggle hidden folders">
-        <label for="moodboard-show-hidden"><i class="icon fas fa-eye-slash small dark"></i><i class="icon fas fa-eye hidden small dark"></i><span class="visually-hidden">Show hidden folders</span></label>
+        <label for="moodboard-show-hidden"><span class="icon material-symbols-sharp small dark hidden">visibility</span><span class="icon material-symbols-sharp small dark">visibility_off</span><span class="visually-hidden">Show hidden folders</span></label>
         <!-- Add a function to show and hide "hidden" directories -->
     </li>
     <li title="Upload files">
-        <label for="moodboard-upload"><i class="icon fas fa-upload small dark"></i><span class="visually-hidden">Upload files:</span></label>
+        <label for="moodboard-upload"><span class="icon material-symbols-sharp small dark">upload</span><span class="visually-hidden">Upload files</span></label>
         <input type="file" id="moodboard-upload" accept=".md, image/*, video/*" multiple class="hidden"/>
     </li>
 </ul>`;

@@ -1,1 +1,3 @@
 This work includes a Twemoji icon provided under the terms of the Creative Commons Attribution 4.0 International License (CC BY 4.0) by Twitter Inc. The original work can be found at https://twemoji.twitter.com/.
+
+Material Symbols by Google. Licensed under the Apache License, Version 2.0. The full text of the license can be found at the [Material Symbols Repository](https://github.com/google/material-design-icons/blob/master/LICENSE).
