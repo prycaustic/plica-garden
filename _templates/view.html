@@ -8,11 +8,15 @@
     <title>{{title}}</title>
 </head>
 <body>
-    {{nav}}
+    <header>
+        <section class="sticky">
+            {{nav}}
+        </section>
+    </header>
     <main>
         <aside id="modal" class="hidden">
             <p id="modal-info"></p>
-            <i class="fas fa-upload upload-icon hidden" title="Upload"></i>
+            <i class="icon fas fa-upload hidden" title="Upload"></i>
         </aside>
         <h1>{{title}}</h1>
         {{content}}

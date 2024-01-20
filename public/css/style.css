@@ -42,11 +42,6 @@ html, body {
 	color: var(--text);
 }
 
-body {
-	display: grid;
-	grid-template-columns: [full-start] 1fr [content-start] 40rem [content-end] 1fr [full-end];
-}
-
 h1, h2, h3, h4, h5, h6 {
 	display: inline-block;
     font-weight: bold;
@@ -115,20 +110,34 @@ pre > code {
 	margin-bottom: 0.5rem;
 }
 
+/* Should still work on screen readers */
+.visually-hidden {
+	position:absolute;
+	left:-10000px;
+	top:auto;
+	width:1px;
+	height:1px;
+	overflow:hidden;
+}
+
 .hidden {
 	display: none !important;
 }
 
-header {
-    grid-column: full;
+body {
+	display: grid;
+	grid-template-columns: [full-start] 1fr [content-start] 40rem [content-end] 1fr [full-end];
 }
 
-nav ul {
+header {
+	min-width: 10rem;
+	display: block;
+	margin: 1rem;
+}
+
+header .sticky {
 	position: sticky;
 	top: 1rem;
-	float: right;
-    width: 12rem;
-	margin-right: 1rem;
 }
 
 nav li {
@@ -147,9 +156,19 @@ nav #current {
 	background-color: var(--accent);
 }
 
+#moodboard-options {
+	text-align: center;
+	margin: 1rem 0;
+}
+
+#moodboard-options li {
+	display: inline-block;
+	margin: 0 0.5rem;
+}
+
 main {
-    grid-column: content;
-	padding: 1rem;
+	margin: 1rem 0;
+	width: 40rem;
 }
 
 main a {
@@ -250,12 +269,25 @@ main ol li > ol {
 	white-space: nowrap;
 }
 
-.upload-icon {
-	display: none;
+.icon {
+	display: block;
 	font-size: 4rem;
 	color: white;
 	transition: opacity 0.3s;
 	margin: 0 auto;
+	cursor: pointer;
+}
+
+.icon.small {
+	font-size: 1.5rem;
+}
+
+.icon.dark {
+	color: var(--text);
+}
+
+.icon:hover {
+	opacity: 0.7;
 }
 
 /* IMAGE MODALS */

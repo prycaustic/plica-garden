@@ -143,6 +143,22 @@ window.onload = () => {
         return;
     }
 
+    let moodboardOptions = `<ul id="moodboard-options">
+    <li title="Edit moodboard name">
+        <label for="moodboard-edit-name"><i class="icon fas fa-edit small dark"></i><span class="visually-hidden">Edit moodboard name</span></label>
+        <!-- Add a function to edit the moodboard name -->
+    </li>
+    <li title="Toggle hidden folders">
+        <label for="moodboard-show-hidden"><i class="icon fas fa-eye-slash small dark"></i><i class="icon fas fa-eye hidden small dark"></i><span class="visually-hidden">Show hidden folders</span></label>
+        <!-- Add a function to show and hide "hidden" directories -->
+    </li>
+    <li title="Upload files">
+        <label for="moodboard-upload"><i class="icon fas fa-upload small dark"></i><span class="visually-hidden">Upload files:</span></label>
+        <input type="file" id="moodboard-upload" accept=".md, image/*, video/*" multiple class="hidden"/>
+    </li>
+</ul>`;
+    document.querySelector('header .sticky').innerHTML += moodboardOptions;
+
     document.addEventListener('dragover', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -159,6 +175,13 @@ window.onload = () => {
         e.preventDefault();
         handleDrop(e.dataTransfer.files);
         document.body.classList.remove('dragenter');
+    });
+
+    let uploadInput = document.querySelector('#moodboard-upload');
+    uploadInput.addEventListener('change', () => {
+        for (let file of uploadInput.files) {
+            uploadFile(file);
+        }
     });
 };
 
