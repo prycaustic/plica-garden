@@ -239,14 +239,14 @@ main ol li > ol {
 	text-transform: uppercase;
 }
 
-.image-list {
+.media-list {
 	column-count: 4;
 	grid-gap: 0.5rem;
 	user-select: none;
 	margin-left: 0;
 }
 
-.image-list li {
+.media-list li {
 	position: relative;
 	width: 100%;
 	margin-bottom: 0.5rem;
@@ -255,11 +255,11 @@ main ol li > ol {
 	cursor: pointer;
 }
 
-.image-list li img {
+.media-list li img {
 	width: 100%;
 }
 
-.image-list li .delete-button {
+.media-list li .delete-button {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -274,7 +274,7 @@ main ol li > ol {
 	transition: opacity 200ms;
 }
 
-.image-list .video-with-filename p {
+.media-list .video-with-filename p {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
@@ -384,7 +384,7 @@ body.dragenter .upload-icon {
 		text-decoration: none;
 	}
 
-	.image-list {
+	.media-list {
 		column-count: 2;
 	}
 
@@ -400,17 +400,17 @@ body.dragenter .upload-icon {
 @media (hover: hover) {
 	#modal-image:hover ~ #modal-info,
 	#modal-video:hover ~ #modal-info,
-	.image-list li:hover .delete-button {
+	.media-list li:hover .delete-button {
 		opacity: 1;
 	}
 
-	.image-list li .delete-button:hover {
+	.media-list li .delete-button:hover {
 		background-color: #cc0000;
 	}
 }
 
 @media (hover: none) {
-	.image-list .hovered .delete-button {
+	.media-list .hovered .delete-button {
 		opacity: 1;
 	}
 
