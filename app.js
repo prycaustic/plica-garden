@@ -16,6 +16,18 @@ const contentPath = path.join(__dirname, '/content');
 const directoryTemplate = path.join(__dirname, '_templates/directory.html');
 const fileTemplate = path.join(__dirname, "_templates/view.html");
 
+function readdirSyncSorted(dir) {
+    let files = fs.readdirSync(dir);
+
+    return files
+        .map(fileName => ({
+        name: fileName,
+        time: fs.statSync(`${dir}/${fileName}`).mtime.getTime(),
+        }))
+        .sort((a, b) => b.time - a.time)
+        .map(file => file.name);
+};
+
 function getNavBar(currentLocation) {
     let root = fs.readdirSync(contentPath);
     let navBar = '';
@@ -70,7 +82,7 @@ app.get('/:location', (req, res) => {
             return;
         }
 
-        let contents = fs.readdirSync(locationPath);
+        let contents = readdirSyncSorted(locationPath);
         let notesFiles = [];
 
         // Go through generic files
@@ -88,7 +100,7 @@ app.get('/:location', (req, res) => {
             if (file.startsWith('_assets')) continue;
             
             if (fs.lstatSync(fullPath).isDirectory()) {
-                let firstFile = fs.readdirSync(fullPath)[0];
+                let firstFile = readdirSyncSorted(fullPath)[0];
                 if (firstFile.endsWith('.md')) continue;
                 let previewPath = path.join(filePath, firstFile);
 
@@ -156,8 +168,7 @@ app.get('/view/*', (req, res) => {
     let viewContents = '';
 
     if (fs.lstatSync(fullPath).isDirectory()) {
-        // TODO: sort images by modified date
-        let files = fs.readdirSync(fullPath);
+        let files = readdirSyncSorted(fullPath);
         let numColumns = 4;
         let columns = Array.from({ length: numColumns }, () => '\n<ul class="image-list">');
 
