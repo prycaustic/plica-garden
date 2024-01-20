@@ -1,18 +1,21 @@
 // Image and video viewer
 let modal = document.getElementById('modal');
-let modalImg = document.getElementById('modal-image');
 let originalTitle = document.title;
+let currentItemIndex = 0;
+let moodboardItems = document.querySelectorAll('[index]');
 
 function getCleanFileName(filePath) {
-    const pathSegments = filePath.split('/');
-    const fileName = decodeURIComponent(pathSegments.pop());
+    let pathSegments = filePath.split('/');
+    let fileName = decodeURIComponent(pathSegments.pop());
     return fileName;
-  }
+};
 
-function openImage(imgSrc) {
+function openImage(img) {
     modal.classList.remove('hidden');
-    modalImg.classList.remove('hidden');
-    modalImg.src = imgSrc;
+    let clone = img.cloneNode(true);
+    clone.setAttribute('id', 'modal-image');
+    modal.appendChild(clone);
+    currentItemIndex = parseInt(img.getAttribute('index'));
 };
 
 function openVideo(video) {
@@ -23,31 +26,65 @@ function openVideo(video) {
     clone.setAttribute('loop', 'true');
     clone.setAttribute('controls', '');
     clone.removeAttribute('onclick');
-    modalVideo = modal.appendChild(clone);
+    modal.appendChild(clone);
     document.title = getCleanFileName(video.children[0].src);
+    currentItemIndex = parseInt(video.getAttribute('index'));
 };
 
+// Hide the modal
 window.onclick = function(event) {
     if (event.target === modal) {
-        modal.classList.add('hidden');
-        modalImg.classList.add('hidden');
-
+        let modalImage = document.getElementById('modal-image');
         let modalVideo = document.getElementById('modal-video');
-        if (modalVideo == null) return;
-        modal.removeChild(modalVideo);
+        modal.classList.add('hidden');
+
+        if (modalImage != null)
+            modal.removeChild(modalImage);
+        if (modalVideo != null)
+            modal.removeChild(modalVideo);
         document.title = originalTitle;
     }
 };
+
+// Image navigation with arrow keys
+function updateModalContent() {
+    let newItem = moodboardItems[currentItemIndex];
+
+    modal.innerHTML = '';
+    if (newItem.tagName === 'IMG') {
+        openImage(newItem);
+    } else if (newItem.tagName === 'VIDEO') {
+        openVideo(newItem);
+    }
+};
+
+addEventListener('keydown', (e) => {
+    e.preventDefault();
+    if (!modal.classList.contains('hidden')) {
+        if (e.key === "ArrowLeft") {
+            if (currentItemIndex > 0) {
+                currentItemIndex--;
+                updateModalContent();
+            }
+        }
+        else if (e.key === "ArrowRight") {
+            if (currentItemIndex < moodboardItems.length - 1) {
+                currentItemIndex++;
+                updateModalContent();
+            }
+        }
+        console.log(currentItemIndex);
+    }
+});
 
 // File uploads
 function handleDrop(files) {
     let filesArray = Array.from(files);
     filesArray.forEach(uploadFile);
-}
+};
 
 function uploadFile(file) {
     let uploadPath = window.location.pathname.replace('/view', '/upload');
-    console.log(uploadPath);
 
     let formData = new FormData();
     formData.append('file', file);
@@ -64,9 +101,9 @@ function uploadFile(file) {
     .catch(error => {
         console.error('Error during upload: ', error);
     });
-}
+};
 
-window.onload = function() {
+window.onload = () => {
     let moodboard = document.querySelector('.moodboard');
 
     if (moodboard == null) {
@@ -91,12 +128,10 @@ window.onload = function() {
         handleDrop(e.dataTransfer.files);
         document.body.classList.remove('dragenter');
     });
-}
+};
 
 // File deletions
 async function deleteFile(button, fileName) {
-    console.log(button);
-    console.log(fileName);
     let listItem = button.parentNode;
     let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'? This CANNOT be undone.`);
 

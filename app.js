@@ -181,11 +181,11 @@ app.get('/view/*', (req, res) => {
 
             if (imageExtensions.some(ext => file.endsWith(ext))) {
                 let dimensions = sizeOf(path.join(contentPath, filePath));
-                listItem += `\n<li>\n<img class="block-context-menu" src="/${filePath}" onclick="openImage(this.src)" loading="lazy" alt="" width="${dimensions.width}" height="${dimensions.height}" />`;
+                listItem += `\n<li>\n<img index="${index}" class="block-context-menu" src="/${filePath}" onclick="openImage(this)" loading="lazy" alt="" width="${dimensions.width}" height="${dimensions.height}" />`;
             }
 
             if (videoExtensions.some(ext => file.endsWith(ext))) {
-                listItem += `\n<li class="video-with-filename block-context-menu" title="${file}"><video onclick="openVideo(this)" preload="metadata"><source src="/${path.join(location, file)}" /></video>`;
+                listItem += `\n<li class="video-with-filename" title="${file}">\n<video index="${index}" class="block-context-menu" onclick="openVideo(this)" preload="metadata">\n<source src="/${path.join(location, file)}" />\n</video>`;
                 listItem += `\n<p>${file}</p>`;
             }
 
