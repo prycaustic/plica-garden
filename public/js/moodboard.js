@@ -4,7 +4,7 @@ let modalInfo = document.getElementById('modal-info');
 let originalTitle = document.title;
 let currentItemIndex = 0;
 let moodboardItems = document.querySelectorAll('[index]');
-let swipeThreshold = 50;
+let swipeThreshold = 75;
 
 function getCleanFileName(filePath) {
     let pathSegments = filePath.split('/');
@@ -46,13 +46,19 @@ function clearModalContents() {
         modal.removeChild(modalImage);
     if (modalVideo != null)
         modal.removeChild(modalVideo);
+
+    document.body.style.overflow = 'initial';
+}
+
+function hideModal() {
+    clearModalContents();
+    modal.classList.add('hidden');
+    document.title = originalTitle;
 }
 
 window.onclick = function(event) {
     if (event.target === modal) {
-        clearModalContents();
-        modal.classList.add('hidden');
-        document.title = originalTitle;
+        hideModal();
     }
 };
 
@@ -94,19 +100,51 @@ addEventListener('keydown', (e) => {
     }
 });
 
-modal.addEventListener('touchstart', function (e) {
+// Swipe controls
+document.addEventListener('touchstart', function (e) {
+    if (modal.classList.contains('hidden')) return;
     startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    document.body.style.overflow = 'hidden';
 });
 
-modal.addEventListener('touchend', function (e) {
-    let endX = e.changedTouches[0].clientX;
-    let deltaX = endX - startX;
+document.addEventListener('touchmove', function (e) {
+    let minOpacity = 0.2;
+    let currentX = e.touches[0].clientX;
+    let deltaX = currentX - startX;
+    let currentY = e.touches[0].clientY;
+    let deltaY = currentY - startY;
 
-    if (deltaX > swipeThreshold) {
-        showPreviousItem();
-    } else if (deltaX < -swipeThreshold) {
-        showNextItem();
+    let opacity = 1 - Math.abs(deltaY) / (swipeThreshold * 4);
+    opacity = Math.max(minOpacity, Math.min(1, opacity));
+
+    modal.firstChild.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    modal.firstChild.style.opacity = opacity;
+});
+
+document.addEventListener('touchend', function (e) {
+    if (modal.classList.contains('hidden')) return;
+    let endX = e.changedTouches[0].clientX;
+    let endY = e.changedTouches[0].clientY;
+    let deltaX = endX - startX;
+    let deltaY = endY - startY;
+
+    if (Math.abs(deltaX) > swipeThreshold || Math.abs(deltaY) > swipeThreshold) {
+        // Check which direction has a greater movement and trigger the corresponding action
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX > swipeThreshold) {
+                showPreviousItem();
+            } else if (deltaX < -swipeThreshold) {
+                showNextItem();
+            }
+        } else {
+            hideModal();
+            return;
+        }
     }
+
+    modal.firstChild.style.transform = 'translateX(0px)';
+    modal.firstChild.style.opacity = 1;
 });
 
 // File uploads
