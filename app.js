@@ -5,6 +5,7 @@ const marked = require('marked');
 const grayMatter = require('gray-matter');
 const multer = require('multer');
 const sizeOf = require('image-size');
+const beautify = require('js-beautify').html;
 
 var favicon = require('serve-favicon')
 
@@ -163,7 +164,7 @@ app.get('/:location', (req, res) => {
             .replace('{{directory-list}}', `${filesList}`)
             .replace('{{notes}}', sectionsHTML);
 
-        res.send(template);
+        res.send(beautify(template, { indent_size: 4, space_in_empty_paren: true }));
     });
 });
 
@@ -215,7 +216,7 @@ app.get('/view/*', (req, res) => {
         .replaceAll('{{title}}', title)
         .replace('{{content}}', viewContents);
     
-    res.send(template);
+    res.send(beautify(template, { indent_size: 4, space_in_empty_paren: true }));
 });
 
 // TODO: make this upload the file to the correct directory???
