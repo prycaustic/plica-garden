@@ -87,7 +87,7 @@ app.get('/:location', (req, res) => {
             return;
         }
 
-        let contents = readdirSyncSorted(locationPath);
+        let contents = fs.readdirSync(locationPath);
         let notesFiles = [];
 
         // Go through generic files
@@ -106,11 +106,10 @@ app.get('/:location', (req, res) => {
             
             if (fs.lstatSync(fullPath).isDirectory()) {
                 let firstFile = readdirSyncSorted(fullPath)[0];
-                if (firstFile === undefined) continue;
 
                 filesList += `\n<li>\n<a href="/view/${filePath}">`;
                 filesList += `\n<figure>`;
-                if (imageExtensions.some(ext => firstFile.endsWith(ext))) {
+                if (firstFile != undefined && imageExtensions.some(ext => firstFile.endsWith(ext))) {
                     let previewPath = path.join(filePath, firstFile);
                     filesList += `\n<img src="${previewPath}">`;
                 }
