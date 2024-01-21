@@ -102,13 +102,14 @@ addEventListener('keydown', (e) => {
 
 // Swipe controls
 document.addEventListener('touchstart', function (e) {
-    if (modal.classList.contains('hidden')) return;
+    if (modal.classList.contains('hidden') || e.touches.length > 1) return;
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
     document.body.style.overflow = 'hidden';
 });
 
 document.addEventListener('touchmove', function (e) {
+    if (e.touches.length > 1) return;
     let minOpacity = 0.2;
     let currentX = e.touches[0].clientX;
     let deltaX = currentX - startX;
@@ -123,7 +124,7 @@ document.addEventListener('touchmove', function (e) {
 });
 
 document.addEventListener('touchend', function (e) {
-    if (modal.classList.contains('hidden')) return;
+    if (modal.classList.contains('hidden') || e.changedTouches.length > 1) return;
     let endX = e.changedTouches[0].clientX;
     let endY = e.changedTouches[0].clientY;
     let deltaX = endX - startX;
