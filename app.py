@@ -38,7 +38,8 @@ def listdir_by_modified(directory_path):
 
 def get_nav_bar(current_location):
     root = os.listdir(CONTENT_PATH)
-    nav_bar = '<nav>\n<ul>'
+    nav_bar = '\n<label id="hamburger-label" for="menu" tabindex="0"><span class="material-symbols-sharp icon small dark">menu</span> PLICA GARDEN</label>\n<input id="menu" type="checkbox" />'
+    nav_bar += '\n<nav>\n<ul>'
 
     if current_location == '/':
         nav_bar += '\n<li><a id="current" href="/">home</a></li>'

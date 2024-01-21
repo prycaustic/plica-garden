@@ -25,7 +25,11 @@
 /* Reset CSS */
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
 
-* { box-sizing: border-box; }
+* { 
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+}
 
 :root {
 	--white: hsla(47, 43%, 96%, 1);
@@ -156,7 +160,7 @@ header {
 	margin: 1rem;
 }
 
-header .sticky {
+.sticky {
 	position: sticky;
 	top: 1rem;
 }
@@ -186,6 +190,11 @@ nav #current {
 #moodboard-options li {
 	display: inline-block;
 	margin: 0 0.5rem;
+}
+
+/* HAMBURGER MENU */
+#hamburger-label, header input[type='checkbox'] {
+    display: none;
 }
 
 main {
@@ -300,7 +309,7 @@ main ol li > ol {
 	margin: 0 auto;
 	cursor: pointer;
 	padding: 0.25rem;
-	vertical-align: baseline;
+	vertical-align: bottom;
 	user-select: none;
 }
 
@@ -360,15 +369,41 @@ body.dragenter .upload-icon {
 
 @media only screen and (max-width: 767px) {
 	body {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		grid-gap: 1rem;
-		margin: 0.5rem;
+		padding: 0.5rem;
+	}
+
+	body > header {
+		width: 100%;
+		margin: 0;
+		position: fixed;
+		top: 0;
+		left: 0;
+		background-color: var(--background);
+		padding: 0.5rem;
+		z-index: 10;
+		max-height: 100dvh;
+		overflow-y: scroll;
+	}
+
+	.sticky {
+		position: initial;
 	}
 
 	header, main {
 		margin: 0;
 		max-width: 100%;
+	}
+
+	main {
+		margin-top: 2.8rem;
+	}
+
+	nav {
+		margin-top: 0.5rem;
 	}
 
 	nav ul {
@@ -389,6 +424,27 @@ body.dragenter .upload-icon {
 		text-decoration: none;
 	}
 
+	/* HAMBURGER MEU */
+	#hamburger-label {
+		display: block;
+		line-height: 1.7em;
+		align-self: center;
+		font-weight: bold;
+		font-size: 1.5rem;
+	}
+
+	#hamburger-label span {
+		font-weight: normal;
+	}
+
+	input[type='checkbox']:not(:checked)+nav {
+		display: none;
+	}
+
+	.link-list {
+		column-width: 8rem;
+	}
+	
 	.media-list {
 		column-count: 2;
 	}
@@ -402,7 +458,7 @@ body.dragenter .upload-icon {
 	}
 
 	.icon.small {
-		font-size: 2.5rem;
+		font-size: 2rem;
 	}
 }
 
