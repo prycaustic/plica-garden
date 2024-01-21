@@ -1,35 +1,37 @@
-window.onload = () => {
+window.addEventListener('load', () => {
     let nav = document.querySelector("nav");
 
-    nav.innerHTML += '<span id="toggle-dirs" class="icon material-symbols-sharp small dark" onclick="toggleHiddenDirs(this)" title="Disable hidden folders">visibility_off</span>';
+    nav.innerHTML += '<span id="toggle-dirs" class="icon material-symbols-sharp small dark" onclick="toggleHiddenDirs()" title="Enable hidden folders">visibility_off</span>';
     directories = document.querySelectorAll('.hidden-dir');
     icon = document.querySelector('#toggle-dirs');
     
     loadHiddenState();
-};
+});
 
 function toggleHiddenDirs() {
     directories.forEach((element) => {
         if (element.classList.contains('hidden')) {
-            localStorage.setItem('hiddenState', 'false');
-            icon.title = 'Disable hidden folders';
-            icon.innerText = 'visibility_off';
+            // Hidden dirs are VISIBLE
             element.classList.remove('hidden');
+            localStorage.setItem('hiddenDirsVisible', 'true');
+            icon.innerText = 'visibility';
+            icon.title = 'Disable hidden folders';
         }
         else {
-            localStorage.setItem('hiddenState', 'true');
-            icon.title = 'Enable hidden folders';
-            icon.innerText = 'visibility';
+            // Hidden dirs are NOT VISIBLE
             element.classList.add('hidden');
+            localStorage.setItem('hiddenDirsVisible', 'false');
+            icon.innerText = 'visibility_off';
+            icon.title = 'Enable hidden folders';
         }
     });
 };
 
 function loadHiddenState() {
-    let hiddenState = localStorage.getItem('hiddenState');
+    let hiddenDirsVisible = localStorage.getItem('hiddenDirsVisible');
 
-    if (hiddenState === 'true') {
-        icon.title = 'Enable hidden folders';
+    if (hiddenDirsVisible === 'true') {
+        icon.title = 'Disable hidden folders';
         icon.innerText = 'visibility';
         directories.forEach((element) => {
             element.classList.add('hidden');

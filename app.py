@@ -49,7 +49,7 @@ def get_nav_bar(current_location):
         location = os.path.join(CONTENT_PATH, directory)
         if os.path.isdir(location):
             # Start hidden if the directory start with '.'
-            nav_bar += '\n<li class="hidden-dir">' if directory.startswith('.') else '\n<li>'
+            nav_bar += '\n<li class="hidden-dir hidden">' if directory.startswith('.') else '\n<li>'
             if location.endswith(current_location):
                 nav_bar += f'\n<a id="current" href="/{directory}">{directory}</a>'
             else:

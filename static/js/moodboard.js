@@ -203,7 +203,7 @@ async function deleteFile(button, contentPath) {
     }
 };
 
-window.onload = () => {
+window.addEventListener('load', () => {
     let moodboard = document.querySelector('#moodboard');
 
     if (moodboard == null) {
@@ -247,7 +247,7 @@ window.onload = () => {
             uploadFile(file);
         }
     });
-};
+});
 
 document.addEventListener('contextmenu', (event) => {
     if (event.target.tagName == 'IMG' && event.target.classList.contains('block-context-menu')) {
