@@ -214,8 +214,9 @@ window.addEventListener('load', () => {
 
     let moodboardOptions = `<ul id="moodboard-options" class="rounded">
     <li title="Edit moodboard name">
-        <label for="moodboard-edit-name"><span class="icon material-symbols-sharp small dark">edit</span><span class="visually-hidden">Edit moodboard name</span></label>
-        <!-- Add a function to edit the moodboard name -->
+        <label for="moodboard-edit"><span class="icon material-symbols-sharp small dark">edit</span><span class="visually-hidden">Edit moodboard</span></label>
+        <!-- Add a function to edit the moodboard -->
+        <!-- Should include the option to delete the moodboard -->
     </li>
     <li title="Upload files">
         <label for="moodboard-upload"><span class="icon material-symbols-sharp small dark">upload</span><span class="visually-hidden">Upload files</span></label>
