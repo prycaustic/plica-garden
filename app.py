@@ -145,6 +145,7 @@ def view_file(location):
 
     # If the page is a directory, create a moodboard with the media files
     if os.path.isdir(absolute_path):
+        pretty_title = os.path.basename(location).replace('-', ' ')
         files = listdir_by_modified(absolute_path)
         media = []
 
@@ -173,7 +174,7 @@ def view_file(location):
         return render_template(
             VIEW_TEMPLATE,
             nav=get_nav_bar(location.split("/")[0]),
-            title=location,
+            title=pretty_title,
             media_list=media,
             moodboard=True
         )

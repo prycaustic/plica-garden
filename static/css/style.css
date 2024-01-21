@@ -72,7 +72,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
     margin-bottom: 0.5rem;
 	text-transform: uppercase;
-	overflow-wrap: break-word;
+	overflow-wrap:normal;
 	max-width: 100%;
 }
 
