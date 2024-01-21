@@ -34,9 +34,8 @@
                         {% if 'width' in item %}
                         <img index="{{ item.index }}" class="block-context-menu" src="{{ item.src }}" onclick="openImage(this)" loading="lazy" alt="" width="{{ item.width }}" height="{{ item.height }}" />
                         {% elif 'title' in item %}
-                        <video >
+                        <video index="{{ item.index }}" class="block-context-menu" onclick="openVideo(this)" preload="metadata">
                             <source src="{{ item.src }}">
-                            Your browser does not support the video tag.
                         </video>
                         <p>{{ item.title }}</p>
                         {% endif %}
