@@ -27,9 +27,9 @@
             <ul id="moodboard" class="media-list">
                 {% for item in media_list %}
                     {% if 'title' in item %}
-                    <li class="video-with-filename" title="{{ item.title }}">
+                    <li class="rounded video-with-filename" title="{{ item.title }}">
                     {% else %}
-                    <li>
+                    <li class="rounded">
                     {% endif %}
                         {% if 'width' in item %}
                         <img index="{{ item.index }}" class="block-context-menu" src="{{ item.src }}" onclick="openImage(this)" loading="lazy" alt="" width="{{ item.width }}" height="{{ item.height }}" />

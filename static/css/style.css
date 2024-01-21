@@ -181,18 +181,6 @@ nav #current {
 	background-color: var(--accent);
 }
 
-#moodboard-options {
-	display: block;
-	text-align: center;
-	margin: 0 1rem;
-	float: right;
-}
-
-#moodboard-options li {
-	display: inline-block;
-	margin: 0 0.5rem;
-}
-
 /* HAMBURGER MENU */
 #hamburger-label, header input[type='checkbox'] {
     display: none;
@@ -201,6 +189,24 @@ nav #current {
 main {
 	margin: 1rem 0;
 	width: 40rem;
+}
+
+main > header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+#moodboard-options {
+	display: block;
+	text-align: center;
+	margin: 0 1rem;
+	background-color: #EBE8E2;
+}
+
+#moodboard-options li {
+	display: inline-block;
+	margin: 0 0.5rem;
 }
 
 main a {
@@ -261,7 +267,6 @@ main ol li > ol {
 	position: relative;
 	width: 100%;
 	margin-bottom: 0.5rem;
-	border-radius: 0.2rem;
 	overflow: hidden;
 	cursor: pointer;
 	background: linear-gradient(to bottom, #b5ada1, var(--accent));
@@ -306,7 +311,7 @@ main ol li > ol {
 	display: inline-block;
 	font-size: 4rem;
 	color: white;
-	transition: opacity 0.3s;
+	transition: opacity 200ms;
 	margin: 0 auto;
 	cursor: pointer;
 	padding: 0.25rem;
@@ -323,7 +328,11 @@ main ol li > ol {
 }
 
 .icon:hover {
-	opacity: 0.7;
+	opacity: 0.5;
+}
+
+.rounded {
+	border-radius: 0.2rem;
 }
 
 /* IMAGE MODALS */

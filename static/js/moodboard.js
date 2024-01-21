@@ -211,7 +211,7 @@ window.addEventListener('load', () => {
         return;
     }
 
-    let moodboardOptions = `<ul id="moodboard-options">
+    let moodboardOptions = `<ul id="moodboard-options" class="rounded">
     <li title="Edit moodboard name">
         <label for="moodboard-edit-name"><span class="icon material-symbols-sharp small dark">edit</span><span class="visually-hidden">Edit moodboard name</span></label>
         <!-- Add a function to edit the moodboard name -->
