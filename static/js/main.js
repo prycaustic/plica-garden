@@ -34,7 +34,7 @@ function loadHiddenState() {
         icon.title = 'Disable hidden folders';
         icon.innerText = 'visibility';
         directories.forEach((element) => {
-            element.classList.add('hidden');
+            element.classList.remove('hidden');
         });
     }
 }
