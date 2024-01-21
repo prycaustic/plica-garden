@@ -178,8 +178,9 @@ nav #current {
 }
 
 #moodboard-options {
+	display: inline-block;
 	text-align: center;
-	margin: 1rem 0;
+	margin: 0 1rem;
 }
 
 #moodboard-options li {
@@ -239,27 +240,28 @@ main ol li > ol {
 	text-transform: uppercase;
 }
 
-.image-list {
+.media-list {
 	column-count: 4;
 	grid-gap: 0.5rem;
 	user-select: none;
 	margin-left: 0;
 }
 
-.image-list li {
+.media-list li {
 	position: relative;
 	width: 100%;
 	margin-bottom: 0.5rem;
 	border-radius: 0.2rem;
 	overflow: hidden;
 	cursor: pointer;
+	background: linear-gradient(to bottom, #b5ada1, var(--accent));
 }
 
-.image-list li img {
+.media-list li img {
 	width: 100%;
 }
 
-.image-list li .delete-button {
+.media-list li .delete-button {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -274,7 +276,7 @@ main ol li > ol {
 	transition: opacity 200ms;
 }
 
-.image-list .video-with-filename p {
+.media-list .video-with-filename p {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
@@ -291,12 +293,15 @@ main ol li > ol {
 }
 
 .icon {
-	display: block;
+	display: inline-block;
 	font-size: 4rem;
 	color: white;
 	transition: opacity 0.3s;
 	margin: 0 auto;
 	cursor: pointer;
+	padding: 0.25rem;
+	vertical-align: baseline;
+	user-select: none;
 }
 
 .icon.small {
@@ -384,7 +389,7 @@ body.dragenter .upload-icon {
 		text-decoration: none;
 	}
 
-	.image-list {
+	.media-list {
 		column-count: 2;
 	}
 
@@ -395,22 +400,26 @@ body.dragenter .upload-icon {
 		min-height: 0;
 		height: auto;
 	}
+
+	.icon.small {
+		font-size: 2.5rem;
+	}
 }
 
 @media (hover: hover) {
 	#modal-image:hover ~ #modal-info,
 	#modal-video:hover ~ #modal-info,
-	.image-list li:hover .delete-button {
+	.media-list li:hover .delete-button {
 		opacity: 1;
 	}
 
-	.image-list li .delete-button:hover {
+	.media-list li .delete-button:hover {
 		background-color: #cc0000;
 	}
 }
 
 @media (hover: none) {
-	.image-list .hovered .delete-button {
+	.media-list .hovered .delete-button {
 		opacity: 1;
 	}
 

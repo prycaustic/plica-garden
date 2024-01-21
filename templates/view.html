@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <title>{{title}}</title>
+</head>
+<body>
+    <header>
+        <section class="sticky">
+            {{nav | safe}}
+        </section>
+    </header>
+    <main>
+        <aside id="modal" class="hidden">
+            <p id="modal-info"></p>
+            <span class="icon material-symbols-sharp hidden" title="Upload">Upload</span>
+        </aside>
+        <header>
+            <h1>{{title}}</h1>
+        </header>
+        <section class="content">
+            {{content | safe}}
+            {% if moodboard %}
+            <ul id="moodboard" class="media-list">
+                {% for item in media_list %}
+                    {% if 'title' in item %}
+                    <li class="video-with-filename" title="{{ item.title }}">
+                    {% else %}
+                    <li>
+                    {% endif %}
+                        {% if 'width' in item %}
+                        <img index="{{ item.index }}" class="block-context-menu" src="{{ item.src }}" onclick="openImage(this)" loading="lazy" alt="" width="{{ item.width }}" height="{{ item.height }}" />
+                        {% elif 'title' in item %}
+                        <video index="{{ item.index }}" class="block-context-menu" onclick="openVideo(this)" preload="metadata">
+                            <source src="{{ item.src }}">
+                        </video>
+                        <p>{{ item.title }}</p>
+                        {% endif %}
+                        <button class="delete-button" onclick="deleteFile(this, '{{ item.src }}')" title="Delete">&#10006;</button>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </section>
+    </main>
+    <script src="/js/main.js"></script>
+    <script src="/js/moodboard.js"></script>
+</body>
+</html>

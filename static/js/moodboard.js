@@ -163,7 +163,11 @@ function uploadFile(file) {
         method: 'POST',
         body: formData,
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok)
+            throw new Error('Network response was not OK');
+        response.json();
+    })
     .then(data => {
         console.log('Upload successful:', data);
         location.reload();
@@ -173,8 +177,34 @@ function uploadFile(file) {
     });
 };
 
+// File deletions
+async function deleteFile(button, contentPath) {
+    let listItem = button.parentNode;
+    let fileName = contentPath.replace('/content', '');
+    let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'? This CANNOT be undone.`);
+
+    if (userConfirmed) {
+        try {
+            let response = await fetch(`/delete${fileName}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            let result = await response.text();
+            if (result == 'File deleted successfully') {
+                listItem.remove();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+};
+
 window.onload = () => {
-    let moodboard = document.querySelector('.moodboard');
+    let moodboard = document.querySelector('#moodboard');
 
     if (moodboard == null) {
         console.log('moodboard not found!');
@@ -186,16 +216,12 @@ window.onload = () => {
         <label for="moodboard-edit-name"><span class="icon material-symbols-sharp small dark">edit</span><span class="visually-hidden">Edit moodboard name</span></label>
         <!-- Add a function to edit the moodboard name -->
     </li>
-    <li title="Toggle hidden folders">
-        <label for="moodboard-show-hidden"><span class="icon material-symbols-sharp small dark hidden">visibility</span><span class="icon material-symbols-sharp small dark">visibility_off</span><span class="visually-hidden">Show hidden folders</span></label>
-        <!-- Add a function to show and hide "hidden" directories -->
-    </li>
     <li title="Upload files">
         <label for="moodboard-upload"><span class="icon material-symbols-sharp small dark">upload</span><span class="visually-hidden">Upload files</span></label>
         <input type="file" id="moodboard-upload" accept=".md, image/*, video/*" multiple class="hidden"/>
     </li>
 </ul>`;
-    document.querySelector('header .sticky').innerHTML += moodboardOptions;
+    document.querySelector('main header').innerHTML += moodboardOptions;
 
     document.addEventListener('dragover', function (e) {
         e.stopPropagation();
@@ -221,32 +247,6 @@ window.onload = () => {
             uploadFile(file);
         }
     });
-};
-
-// File deletions
-async function deleteFile(button, fileName) {
-    let listItem = button.parentNode;
-    let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'? This CANNOT be undone.`);
-
-    if (userConfirmed) {
-        try {
-            let response = await fetch(`/delete/${fileName}`, {
-                method: 'DELETE',
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            let result = await response.text();
-            console.log(result);
-            if (result == 'File deleted successfully') {
-                listItem.remove();
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
 };
 
 document.addEventListener('contextmenu', (event) => {

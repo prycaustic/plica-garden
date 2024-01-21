@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <title>{{title}}</title>
+</head>
+<body>
+    <header>
+        <section class="sticky">
+            {{nav | safe}}
+        </section>
+    </header>
+    <main>
+        <h1>{{title}}</h1>
+        <section>
+            <ul class="link-list">
+                {% for item in directory_list %}
+                <li>
+                    {% if 'figure' in item %}
+                    <a href="{{ item['link'] }}">
+                        <figure>
+                            {% if item['figure']['preview_path'] %}
+                                <img src="/{{ item['figure']['preview_path'] }}" alt="{{ item['figure']['caption'] }}">
+                            {% endif %}
+                            <figcaption>{{ item['figure']['caption'] }}</figcaption>
+                        </figure>
+                    </a>
+                    {% else %}
+                    <a href="{{ item['link'] }}">{{ item['text'] }}</a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        {% for tag, notes in notes.items() %}
+        <section>
+            <h2>{{ tag }}</h2>
+            <ul class="link-list">
+                {% for note in notes %}
+                    <li><a href="{{ note['link'] }}">{{ note['text'] }}</a></li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endfor %}
+    </main>
+    <script src="/js/main.js"></script>
+</body>
+</html>
