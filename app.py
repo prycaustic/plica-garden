@@ -2,16 +2,12 @@ from flask import Flask, render_template, request, send_from_directory, jsonify
 import os
 import frontmatter
 import markdown
-from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from PIL import Image
 
 app = Flask(__name__, static_url_path='')
-app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['CONTENT_FOLDER'] = 'content'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
-
-csrf = CSRFProtect(app)
 
 # Constants
 CONTENT_PATH = os.path.join(os.path.dirname(__file__), 'content')
@@ -206,19 +202,15 @@ def get_image_size(image_path):
 
 @app.route('/upload/<path:location>', methods=['POST'])
 def upload_file(location):
-    try:
-        url_parts = request.url.replace('/upload', '/content').split('/').filter(None)
-        destination_path = os.path.join(os.path.dirname(__file__), *url_parts)
-        os.makedirs(destination_path, exist_ok=True)
-        file = request.files['file']
-        if file:
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(destination_path, filename))
-            return jsonify({'message': 'File uploaded successfully'}), 200
-        else:
-            return jsonify({'message': 'No file provided'}), 400
-    except Exception as e:
-        return str(e), 500
+    destination_path = os.path.join(CONTENT_PATH, location)
+    os.makedirs(destination_path, exist_ok=True)
+    file = request.files['file']
+    if file:
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(destination_path, filename))
+        return jsonify({'message': 'File uploaded successfully'}), 200
+    else:
+        return jsonify({'message': 'No file provided'}), 400
 
 @app.route('/delete/<path:location>', methods=['DELETE'])
 def delete_file(location):

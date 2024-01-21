@@ -163,7 +163,11 @@ function uploadFile(file) {
         method: 'POST',
         body: formData,
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok)
+            throw new Error('Network response was not OK');
+        response.json();
+    })
     .then(data => {
         console.log('Upload successful:', data);
         location.reload();
@@ -171,6 +175,32 @@ function uploadFile(file) {
     .catch(error => {
         console.error('Error during upload: ', error);
     });
+};
+
+// File deletions
+async function deleteFile(button, contentPath) {
+    let listItem = button.parentNode;
+    let fileName = contentPath.replace('/content', '');
+    let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'? This CANNOT be undone.`);
+
+    if (userConfirmed) {
+        try {
+            let response = await fetch(`/delete${fileName}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            let result = await response.text();
+            if (result == 'File deleted successfully') {
+                listItem.remove();
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 };
 
 window.onload = () => {
@@ -217,32 +247,6 @@ window.onload = () => {
             uploadFile(file);
         }
     });
-};
-
-// File deletions
-async function deleteFile(button, fileName) {
-    let listItem = button.parentNode;
-    let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'? This CANNOT be undone.`);
-
-    if (userConfirmed) {
-        try {
-            let response = await fetch(`/delete/${fileName}`, {
-                method: 'DELETE',
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            let result = await response.text();
-            console.log(result);
-            if (result == 'File deleted successfully') {
-                listItem.remove();
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
 };
 
 document.addEventListener('contextmenu', (event) => {
