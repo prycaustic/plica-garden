@@ -13,7 +13,33 @@
             {{nav | safe}}
         </section>
     </header>
-    <main></main>
+    <main>
+        <h1>Welcome!</h1>
+        <p>To get started, please follow these steps:</p>
+        <p>Create a folder named 'content' in the same directory as the server.</p>
+        <p>Inside the 'content' folder, you can organize your media using subfolders.</p>
+        <h2>Folder structure</h2>
+        <pre><code>content
+├── Notes
+├── Moodboards
+├── Documents</code></pre>
+        <p>In this example, "Notes," "Images," and "Documents" will be displayed as separate pages on the left navigation tab. Each separate page will attempt to list its contents as appropriately as possible.</p>
+        <pre><code>content
+├── Notes
+│   ├── todo-list.md
+│   ├── homework.md
+├── Moodboards
+│   ├── Vacation
+│   │   ├── image.png
+│   │   ├── another-image.jpg
+│   ├── Cats
+│   │   ├── cat1.png
+│   │   ├── funny-cat.gif</code></pre>
+        <p>For example, inside of the 'Notes' directory you will see a list of notes grouped by their tags. If instead there is another folder with images (or videos) in it you will see a page with a list of moodboards.</p>
+        <p>Inside the 'Moodboards' directory you would see a list with the 'Vacation' moodboard and the 'Cats' moodboard. (MIXED NOTES AND MOODBOARDS EXPLANATION)</p>
+        <h2>Enjoy!</h2>
+        <p>Now, you are ready to use the app! Feel free to explore and manage your notes and images effortlessly.</p>
+    </main>
     <script src="/js/main.js"></script>
 </body>
 </html>
