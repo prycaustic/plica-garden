@@ -89,7 +89,6 @@ function showNextItem() {
 }
 
 addEventListener('keydown', (e) => {
-    e.preventDefault();
     if (!modal.classList.contains('hidden')) {
         if (e.key === "ArrowLeft") {
             showPreviousItem();
@@ -97,6 +96,7 @@ addEventListener('keydown', (e) => {
         else if (e.key === "ArrowRight") {
             showNextItem();
         }
+        e.preventDefault();
     }
 });
 
