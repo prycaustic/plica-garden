@@ -18,10 +18,12 @@
             <p id="modal-info"></p>
             <span class="icon material-symbols-sharp hidden" title="Upload">Upload</span>
         </aside>
-        <h1>{{title}}</h1>
+        <header>
+            <h1>{{title}}</h1>
+        </header>
         <section class="content">
             {{content | safe}}
-            {% if media_list %}
+            {% if moodboard %}
             <ul id="moodboard" class="media-list">
                 {% for item in media_list %}
                     {% if 'title' in item %}

@@ -186,16 +186,12 @@ window.onload = () => {
         <label for="moodboard-edit-name"><span class="icon material-symbols-sharp small dark">edit</span><span class="visually-hidden">Edit moodboard name</span></label>
         <!-- Add a function to edit the moodboard name -->
     </li>
-    <li title="Toggle hidden folders">
-        <label for="moodboard-show-hidden"><span class="icon material-symbols-sharp small dark hidden">visibility</span><span class="icon material-symbols-sharp small dark">visibility_off</span><span class="visually-hidden">Show hidden folders</span></label>
-        <!-- Add a function to show and hide "hidden" directories -->
-    </li>
     <li title="Upload files">
         <label for="moodboard-upload"><span class="icon material-symbols-sharp small dark">upload</span><span class="visually-hidden">Upload files</span></label>
         <input type="file" id="moodboard-upload" accept=".md, image/*, video/*" multiple class="hidden"/>
     </li>
 </ul>`;
-    document.querySelector('header .sticky').innerHTML += moodboardOptions;
+    document.querySelector('main header').innerHTML += moodboardOptions;
 
     document.addEventListener('dragover', function (e) {
         e.stopPropagation();

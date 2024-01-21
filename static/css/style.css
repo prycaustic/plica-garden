@@ -178,8 +178,9 @@ nav #current {
 }
 
 #moodboard-options {
+	display: inline-block;
 	text-align: center;
-	margin: 1rem 0;
+	margin: 0 1rem;
 }
 
 #moodboard-options li {
@@ -292,12 +293,15 @@ main ol li > ol {
 }
 
 .icon {
-	display: block;
+	display: inline-block;
 	font-size: 4rem;
 	color: white;
 	transition: opacity 0.3s;
 	margin: 0 auto;
 	cursor: pointer;
+	padding: 0.25rem;
+	vertical-align: baseline;
+	user-select: none;
 }
 
 .icon.small {

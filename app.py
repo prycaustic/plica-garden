@@ -174,8 +174,9 @@ def view_file(location):
         return render_template(
             VIEW_TEMPLATE,
             nav=get_nav_bar(location.split("/")[0]),
-            title=location if media else 'File Not Found',
-            media_list=media
+            title=location,
+            media_list=media,
+            moodboard=True
         )
     # If it's a note, show the note
     elif os.path.isfile(absolute_path):
