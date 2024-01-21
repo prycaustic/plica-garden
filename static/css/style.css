@@ -182,9 +182,10 @@ nav #current {
 }
 
 #moodboard-options {
-	display: inline-block;
+	display: block;
 	text-align: center;
 	margin: 0 1rem;
+	float: right;
 }
 
 #moodboard-options li {
