@@ -1,12 +1,10 @@
 from flask import Flask, render_template, request, send_from_directory, jsonify
 import os
-import shutil
 import frontmatter
 import markdown
 from flask_wtf.csrf import CSRFProtect
 from werkzeug.utils import secure_filename
 from PIL import Image
-import colorgram
 
 app = Flask(__name__, static_url_path='')
 app.config['UPLOAD_FOLDER'] = 'uploads'
