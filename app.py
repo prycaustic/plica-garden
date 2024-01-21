@@ -143,10 +143,11 @@ def view_directory(location):
 
 @app.route('/view/<path:location>')
 def view_file(location):
-    full_path = os.path.join(CONTENT_PATH, location)
+    absolute_path = os.path.join(CONTENT_PATH, location)
 
-    if os.path.isdir(full_path):
-        files = listdir_by_modified(full_path)
+    # If the page is a directory, create a moodboard with the media files
+    if os.path.isdir(absolute_path):
+        files = listdir_by_modified(absolute_path)
         media = []
 
         for index, file in enumerate(files):
@@ -172,25 +173,27 @@ def view_file(location):
                 })
 
         return render_template(
-            'view.html',
+            VIEW_TEMPLATE,
             nav=get_nav_bar(location.split("/")[0]),
             title=location if media else 'File Not Found',
             media_list=media
         )
-    elif os.path.isfile(full_path):
-        post = frontmatter.load(full_path)
-        replaced_content = post.content.replace(r'\[([^\]]+)\]\((/[^\)]+)\)', r'[\1](/view\2.md)')
+    # If it's a note, show the note
+    elif os.path.isfile(absolute_path):
+        note = frontmatter.load(absolute_path)
+        # regex to make markdown links work
+        # should turn [text](link/to/note) into [text](/view/link/to/note.md)
+        # which will get turn into proper html
+        replaced_content = note.content.replace(r'\[([^\]]+)\]\((/[^\)]+)\)', r'[\1](/view\2.md)')
         html_content = markdown.markdown(replaced_content)
-        title = post.get('title', location)
+        title = note.get('title', location)
 
         return render_template(
-            'view.html',
+            VIEW_TEMPLATE,
             nav=get_nav_bar(location.split("/")[0]),
             title=title,
             content=html_content
         )
-    else:
-        os.abort()  # File not found
 
 def get_image_size(image_path):
     try:
