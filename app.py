@@ -75,62 +75,69 @@ def view_directory(location):
     if not os.path.isdir(location_path):
         return 'Location not found.', 404
 
+    # Sort through notes and regular files / folders
     contents = sorted(os.listdir(location_path))
-    notes_files = []
-    files_list = []
+    notes = []
+    files = []
 
     for file in contents:
-        file_path = os.path.join(location, file)
-        absolute_path = os.path.join(CONTENT_PATH, file_path)
-
-        if file.endswith('.md'):
-            notes_files.append(file)
-            continue
-
         if file.startswith('.') or file.startswith('_assets'):
             continue
 
-        if os.path.isdir(absolute_path):
-            if (len(os.listdir(absolute_path)) < 1): continue
-            first_file = listdir_by_modified(absolute_path)[0]
-            preview_image_path = os.path.join(file_path, first_file)
-
-            files_list.append({
-                'link': f"/view/{file_path}",
-                'figure': {
-                    'preview_path': os.path.join(app.config['CONTENT_FOLDER'], preview_image_path) if first_file and any(first_file.endswith(ext) for ext in IMAGE_EXTENSIONS) else None,
-                    'caption': file.replace("-", " ")
-                }
-            })
-        else:
-            files_list.append({'link': f"/view/{file_path}", 'text': file})
-
-    tag_sections = {}
-
-    for file in notes_files:
-        file_path = os.path.join(location_path, file)
-        if os.path.isdir(file_path):
+        if file.endswith('.md'):
+            notes.append(file)
             continue
 
-        note = frontmatter.load(file_path)
+        relative_path = os.path.join(location, file)
+        absolute_path = os.path.join(CONTENT_PATH, relative_path)
 
+        if not os.path.isdir(absolute_path):
+            files.append({'link': f"/view/{relative_path}", 'text': file})
+            continue
+
+        if (len(os.listdir(absolute_path)) < 1):
+            continue
+
+        first_file = listdir_by_modified(absolute_path)[0]
+        preview_rel_path = os.path.join(relative_path, first_file)
+        # Get the link only if the file has a valid image extension
+        preview_src = os.path.join(app.config['CONTENT_FOLDER'], preview_rel_path) if first_file and any(first_file.endswith(ext) for ext in IMAGE_EXTENSIONS) else None
+
+        files.append({
+            'link': f"/view/{relative_path}",
+            'figure': {
+                'preview_path': preview_src,
+                'caption': file.replace("-", " ")
+            }
+        })
+
+    # Formatted links to notes which have a valid tag and title
+    # Tag dictionary should have all tags
+    tag_dictionary = {}
+
+    for file in notes:
+        relative_path = os.path.join(location_path, file)
+        note = frontmatter.load(relative_path)
+
+        # Really ugly but it works
         tags = note.get('tags', []) if isinstance(note.get('tags'), list) else \
             [tag.strip() for tag in note.get('tags', '').split(',')]
 
         for tag in tags:
-            if tag not in tag_sections:
-                tag_sections[tag] = []
-            tag_sections[tag].append({'file': file, 'title': note.get('title', '')})
+            if tag not in tag_dictionary:
+                tag_dictionary[tag] = []
+            tag_dictionary[tag].append({'path': relative_path, 'title': note.title})
 
+    # Each section which should be turned into html with a list of notes
     sections = {}
-    for tag, notes in tag_sections.items():
-        sections[tag] = [{'link': f"/view/{location}/{note['file']}", 'text': note['title']} for note in notes]
+    for tag, notes in tag_dictionary.items():
+        sections[tag] = [{'link': f"/view/{note.path}", 'text': note['title']} for note in notes]
 
     return render_template(
         DIRECTORY_TEMPLATE,
         nav=get_nav_bar(location),
         title=location,
-        directory_list=files_list,
+        directory_list=files,
         notes=sections
     )
 
