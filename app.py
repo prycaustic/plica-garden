@@ -93,13 +93,13 @@ def view_directory(location):
             files.append({'link': f"/view/{relative_path}", 'text': file})
             continue
 
-        if (len(os.listdir(absolute_path)) < 1):
-            continue
+        preview_src = ''
 
-        first_file = listdir_by_modified(absolute_path)[0]
-        preview_rel_path = os.path.join(relative_path, first_file)
-        # Get the link only if the file has a valid image extension
-        preview_src = os.path.join(app.config['CONTENT_FOLDER'], preview_rel_path) if first_file and any(first_file.endswith(ext) for ext in IMAGE_EXTENSIONS) else None
+        if (len(os.listdir(absolute_path)) > 0):
+            first_file = listdir_by_modified(absolute_path)[0]
+            preview_rel_path = os.path.join(relative_path, first_file)
+            # Get the link only if the file has a valid image extension
+            preview_src = os.path.join(app.config['CONTENT_FOLDER'], preview_rel_path) if first_file and any(first_file.endswith(ext) for ext in IMAGE_EXTENSIONS) else None
 
         files.append({
             'link': f"/view/{relative_path}",
