@@ -68,13 +68,13 @@ def home():
 
 @app.route('/<location>')
 def view_directory(location):
-    location_path = os.path.join(CONTENT_PATH, location)
+    abs_location_path = os.path.join(CONTENT_PATH, location)
 
-    if not os.path.isdir(location_path):
+    if not os.path.isdir(abs_location_path):
         return 'Location not found.', 404
 
     # Sort through notes and regular files / folders
-    contents = sorted(os.listdir(location_path))
+    contents = sorted(os.listdir(abs_location_path))
     notes = []
     files = []
 
@@ -114,22 +114,23 @@ def view_directory(location):
     tag_dictionary = {}
 
     for file in notes:
-        relative_path = os.path.join(location_path, file)
-        note = frontmatter.load(relative_path)
+        relative_path = os.path.join(location, file)
+        absolute_path = os.path.join(CONTENT_PATH, relative_path)
+        post = frontmatter.load(absolute_path)
 
         # Really ugly but it works
-        tags = note.get('tags', []) if isinstance(note.get('tags'), list) else \
-            [tag.strip() for tag in note.get('tags', '').split(',')]
+        tags = post.get('tags', []) if isinstance(post.get('tags'), list) else \
+            [tag.strip() for tag in post.get('tags', '').split(',')]
 
         for tag in tags:
             if tag not in tag_dictionary:
                 tag_dictionary[tag] = []
-            tag_dictionary[tag].append({'path': relative_path, 'title': note.title})
+            tag_dictionary[tag].append({'path': relative_path, 'title': post['title']})
 
     # Each section which should be turned into html with a list of notes
     sections = {}
     for tag, notes in tag_dictionary.items():
-        sections[tag] = [{'link': f"/view/{note.path}", 'text': note['title']} for note in notes]
+        sections[tag] = [{'link': f"/view/{note['path']}", 'text': note['title']} for note in notes]
 
     return render_template(
         DIRECTORY_TEMPLATE,
