@@ -136,19 +136,14 @@ def view_directory(location):
         for tag in tags:
             if tag not in tag_dictionary:
                 tag_dictionary[tag] = []
-            tag_dictionary[tag].append({'path': relative_path, 'title': post['title']})
-
-    # Each section which should be turned into html with a list of notes
-    sections = {}
-    for tag, notes in tag_dictionary.items():
-        sections[tag] = [{'link': f"/view/{note['path']}", 'text': note['title']} for note in notes]
+            tag_dictionary[tag].append({'path': relative_path, 'post': post})
 
     return render_template(
         DIRECTORY_TEMPLATE,
         nav=get_nav_bar(location),
         title=location,
         directory_list=files,
-        notes=sections
+        notes=tag_dictionary
     )
 
 @app.route('/view/<path:location>')

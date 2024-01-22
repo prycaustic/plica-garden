@@ -23,7 +23,7 @@
                     <a href="{{ item['link'] }}">
                         <figure>
                             {% if item['figure']['preview_path'] %}
-                                <img src="/{{ item['figure']['preview_path'] }}" alt="{{ item['figure']['caption'] }}">
+                                <img src="/{{ item['figure']['preview_path'] }}" alt="">
                             {% endif %}
                             <figcaption>{{ item['figure']['caption'] }}</figcaption>
                         </figure>
@@ -41,7 +41,14 @@
             <h2>{{ tag }}</h2>
             <ul class="link-list">
                 {% for note in notes %}
-                    <li><a href="{{ note['link'] }}">{{ note['text'] }}</a></li>
+                    <li>
+                        <a href="/view/{{ note['path'] }}">
+                            <strong>{{ note['post']['title'] }}</strong>
+                            {% if note['post']['author'] %}
+                            <span class="subtitle">{{ note['post']['author'] }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
                 {% endfor %}
             </ul>
         </section>

@@ -89,6 +89,12 @@ h6 { font-size: 0.67rem; }
 
 p { margin-bottom: 1rem; }
 
+.subtitle {
+	display: block;
+	font-style: italic;
+	text-align: right;
+}
+
 img, video {
 	max-width: 100%;
 	height: auto;
