@@ -162,6 +162,7 @@ def view_file(location):
         media = []
 
         for index, file in enumerate(files):
+            if file.startswith('.'): continue
             file_path = os.path.join(location, file)
             absolute_path = os.path.join(CONTENT_PATH, file_path)
 
@@ -234,7 +235,7 @@ def get_video_size(video_path):
 temp_dir = tempfile.mkdtemp()
 
 # Register cleanup function to delete the temporary directory on application exit
-atexit.register(shutil.rmtree, temp_dir, ignore_errors=True)    
+# atexit.register(shutil.rmtree, temp_dir, ignore_errors=True)    
 
 # This is SLOW AS BALLS!!! it works doe
 @app.route('/thumbs/<path:video_path>')
