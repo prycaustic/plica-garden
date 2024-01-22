@@ -22,15 +22,21 @@
         <header>
             <h1>{{title}}</h1>
             {% if moodboard %}
-            <ul id="moodboard-options" class="rounded">
+            <ul id="moodboard-actions" class="rounded">
+                <!--
                 <li title="Edit moodboard">
                     <label for="moodboard-edit"><span class="icon material-symbols-sharp small dark">edit</span><span class="visually-hidden">Edit moodboard</span></label>
-                    <!-- Add a function to edit the moodboard -->
-                    <!-- Should include the option to delete the moodboard -->
+                    <form id="moodboard-edit" class="rounded">
+                        <legend>Edit moodboard</legend>
+                        <label for="moodboard-edit-name">Name</label>
+                        <input type="text" id="moodboard-edit-name" value="{{ title }}" />
+                        <label for="moodboard-delete"><span class="icon material-symbols-sharp small dark">delete</span></label>
+                    </form>
                 </li>
+                -->
                 <li title="Upload files">
                     <label for="moodboard-upload"><span class="icon material-symbols-sharp small dark">upload</span><span class="visually-hidden">Upload files</span></label>
-                    <input type="file" id="moodboard-upload" accept=".md, image/*, video/*" multiple class="hidden"/>
+                    <input type="file" id="moodboard-upload" accept=".md, image/*, video/*" multiple class="hidden" />
                 </li>
             </ul>
             {% endif %}
