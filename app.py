@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, send_from_directory, jsonify
+from flask import Flask, render_template, request, send_from_directory, jsonify, send_file
+from moviepy.editor import VideoFileClip
 import os
 import frontmatter
 import markdown
 from werkzeug.utils import secure_filename
 from PIL import Image
+import tempfile
+import shutil
+import atexit
 
 app = Flask(__name__, static_url_path='')
 app.config['CONTENT_FOLDER'] = 'content'
@@ -159,9 +163,9 @@ def view_file(location):
 
         for index, file in enumerate(files):
             file_path = os.path.join(location, file)
+            absolute_path = os.path.join(CONTENT_PATH, file_path)
 
             if any(file.endswith(ext) for ext in IMAGE_EXTENSIONS):
-                absolute_path = os.path.join(CONTENT_PATH, file_path)
                 src_path = os.path.join(app.config['CONTENT_FOLDER'], file_path)
                 dimensions = get_image_size(absolute_path)
                 media.append({
@@ -173,10 +177,14 @@ def view_file(location):
 
             if any(file.endswith(ext) for ext in VIDEO_EXTENSIONS):
                 src_path = os.path.join(app.config['CONTENT_FOLDER'], file_path)
+                dimensions = get_video_size(absolute_path)
                 media.append({
+                    'title': file,
                     'index': index,
                     'src': f"/{src_path}",
-                    'title': file
+                    'poster': f"/thumbs/{file_path}",
+                    'width': dimensions[0],
+                    'height': dimensions[1]
                 })
 
         return render_template(
@@ -211,6 +219,45 @@ def get_image_size(image_path):
     except Exception as e:
         print(f"Error while getting image size: {e}")
         return None
+    
+def get_video_size(video_path):
+    try:
+        clip = VideoFileClip(video_path)
+        width, height = clip.size
+        clip.close()
+        return width, height
+    except Exception as e:
+        # Handle exceptions (e.g., invalid video path, etc.)
+        return None
+
+# Path for video thumbnails... kind of a really dumb solution but preload="metadata" doesn't work
+temp_dir = tempfile.mkdtemp()
+
+# Register cleanup function to delete the temporary directory on application exit
+atexit.register(shutil.rmtree, temp_dir, ignore_errors=True)    
+
+# This is SLOW AS BALLS!!! it works doe
+@app.route('/thumbs/<path:video_path>')
+def generate_thumbnail(video_path):
+    absolute_video_path = os.path.join(CONTENT_PATH, video_path)
+    video_file_name = os.path.splitext(os.path.basename(video_path))[0]
+    temp_thumbnail_path = os.path.join(temp_dir, f'{video_file_name}_thumb.jpg')
+
+    if os.path.exists(temp_thumbnail_path):
+        return send_file(temp_thumbnail_path, mimetype='image/jpeg', as_attachment=True, download_name=f'{video_file_name}_thumbnail.jpg')
+
+    try:
+        clip = VideoFileClip(absolute_video_path)
+
+        # Generate the thumbnail
+        halfway_time = clip.duration / 2
+        clip.save_frame(temp_thumbnail_path, halfway_time)
+        clip.close()
+
+        return send_file(temp_thumbnail_path, mimetype='image/jpeg', as_attachment=True, download_name=f'{video_file_name}_thumb.jpg')
+
+    except Exception as e:
+        return str(e)
 
 @app.route('/upload/<path:location>', methods=['POST'])
 def upload_file(location):

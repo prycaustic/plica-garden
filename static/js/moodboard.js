@@ -30,11 +30,11 @@ function openVideo(video) {
     clone.setAttribute('id', 'modal-video');
     clone.setAttribute('autoplay', 'true');
     clone.setAttribute('loop', 'true');
-    clone.setAttribute('controls', '');
+    clone.setAttribute('controls', 'true');
     clone.removeAttribute('onclick');
     clone.classList.remove('block-context-menu');
     modal.insertBefore(clone, modal.firstChild);
-    modalInfo.innerText = getCleanFileName(clone.children[0].src);
+    modalInfo.innerText = getCleanFileName(clone.src);
 };
 
 // Hide the modal
