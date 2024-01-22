@@ -27,14 +27,22 @@ def content(filepath):
     except FileNotFoundError:
         return f"File not found: {full_path}", 404
 
-def listdir_by_modified(directory_path):
+def listdir_by_modified(path):
     try:
-        files = os.listdir(directory_path)
-        sorted_files = sorted(files, key=lambda file: os.path.getmtime(os.path.join(directory_path, file)), reverse=True)
-        return sorted_files
+        return sorted(os.listdir(path), key=lambda file: os.path.getmtime(os.path.join(path, file)), reverse=True)
     except Exception as e:
         print(f"Error: {e}")
         return None
+    
+def find_first_image_file(path):
+    files = listdir_by_modified(path)
+
+    for file in files:
+        _, file_extension = os.path.splitext(file)
+        if file_extension.lower() in IMAGE_EXTENSIONS:
+            return file
+
+    return None
 
 def get_nav_bar(current_location):
     root = os.listdir(CONTENT_PATH)
@@ -95,10 +103,10 @@ def view_directory(location):
         preview_src = ''
 
         if (len(os.listdir(absolute_path)) > 0):
-            first_file = listdir_by_modified(absolute_path)[0]
-            preview_rel_path = os.path.join(relative_path, first_file)
-            # Get the link only if the file has a valid image extension
-            preview_src = os.path.join(app.config['CONTENT_FOLDER'], preview_rel_path) if first_file and any(first_file.endswith(ext) for ext in IMAGE_EXTENSIONS) else None
+            preview_image = find_first_image_file(absolute_path)
+            if preview_image:
+                image_path = os.path.join(relative_path, preview_image)
+                preview_src = os.path.join(app.config['CONTENT_FOLDER'], image_path)
 
         files.append({
             'link': f"/view/{relative_path}",
