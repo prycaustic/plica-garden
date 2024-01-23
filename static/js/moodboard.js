@@ -130,11 +130,23 @@ function showNextItem() {
 addEventListener('keydown', (e) => {
     if (modal.classList.contains('hidden')) return;
     let contents = modal.firstChild;
-    let prevVolume = 1;
+    prevVolume = 1;
 
     // Modal controls
-    if (document.fullscreenElement != contents) {
+    if (document.fullscreenElement == contents) {
+        e.preventDefault();
+        if (e.key == 'f')
+            document.exitFullscreen();
+        if (contents.nodeName == 'IMG')
+            handleFullscreenImage();
+        if (contents.nodeName == 'VIDEO')
+            handleFullscreenVideo(contents, e.key);
+    } else {
+        e.preventDefault();
         switch (e.key) {
+            case 'f':
+                contents.requestFullscreen();
+                break;
             case 'ArrowLeft':
                 showPreviousItem();
                 break;
@@ -143,58 +155,55 @@ addEventListener('keydown', (e) => {
                 break;
         }
     }
-
-    // Video controls
-    if (contents.nodeName === "VIDEO") {
-        switch (e.key) {
-            case 'f':
-                contents.requestFullscreen();
-                break;
-            case 'j':
-                contents.currentTime -= 10;
-                break;
-            case 'k':
-                if (contents.paused)
-                    contents.play();
-                else
-                    contents.pause();
-                break;
-            case 'l':
-                contents.currentTime += 10;
-            case 'ArrowLeft':
-                contents.currentTime -= 5;
-                break;
-            case 'ArrowRight':
-                contents.currentTime += 5;
-                break;
-            case 'm':
-                if (contents.muted) {
-                    contents.muted = false;
-                    contents.volume = prevVolume
-                } else {
-                    prevVolume = contents.volume;
-                    contents.muted = true;
-                }
-                break;
-            case 'ArrowUp':
-                if (contents.muted)
-                    contents.muted = false;
-                if (contents.volume < 1)
-                    contents.volume += 0.1;
-                break;
-            case 'ArrowDown':
-                console.log(contents.volume);
-                if (contents.volume > 0.05)
-                    contents.volume -= 0.1;
-                else
-                    contents.muted = true;
-                break;
-            default:
-                return;
-        }
-    }
-    e.preventDefault();
 });
+
+function handleFullscreenImage(image, input) {
+    // Not implemented yet
+}
+
+function handleFullscreenVideo(video, input) {
+    switch (input) {
+        case 'j':
+            video.currentTime -= 10;
+            break;
+        case 'k':
+            if (video.paused)
+                video.play();
+            else
+                video.pause();
+            break;
+        case 'l':
+            video.currentTime += 10;
+        case 'ArrowLeft':
+            video.currentTime -= 5;
+            break;
+        case 'ArrowRight':
+            video.currentTime += 5;
+            break;
+        case 'm':
+            if (video.muted) {
+                video.muted = false;
+                video.volume = prevVolume
+            } else {
+                prevVolume = video.volume;
+                video.muted = true;
+            }
+            break;
+        case 'ArrowUp':
+            if (video.muted)
+                video.muted = false;
+            if (video.volume < 1)
+                video.volume += 0.1;
+            break;
+        case 'ArrowDown':
+            console.log(video.volume);
+            if (video.volume > 0.05)
+                video.volume -= 0.1;
+            else
+                video.muted = true;
+            break;
+    }
+}
 
 // Swipe controls
 document.addEventListener('touchstart', function (e) {
