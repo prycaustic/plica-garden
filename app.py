@@ -181,8 +181,8 @@ def view_file(location):
                     'index': index,
                     'src': f"/{src_path}",
                     'thumbnail': f"/thumbs/{file_path}",
-                    'width': dimensions[0],
-                    'height': dimensions[1]
+                    'width': dimensions[0] if dimensions != None else 640,
+                    'height': dimensions[1]  if dimensions != None else 360
                 })
 
         return render_template(
