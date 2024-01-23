@@ -82,6 +82,15 @@ function animateModal(animation) {
     }, {once: true});
 }
 
+function animateModalContents(animation) {
+    let contents = modal.firstChild;
+
+    contents.setAttribute(animation, '');
+    contents.addEventListener('animationend', () => {
+        contents.removeAttribute(animation);
+    }, {once: true});
+}
+
 window.onclick = function(event) {
     if (event.target === modal) {
         animateModal('closing');
@@ -104,6 +113,8 @@ function showPreviousItem() {
     if (currentItemIndex > 0) {
         currentItemIndex--;
         updateModalContent();
+    } else {
+        animateModalContents('shaking');
     }
 }
 
@@ -111,6 +122,8 @@ function showNextItem() {
     if (currentItemIndex < moodboardItems.length - 1) {
         currentItemIndex++;
         updateModalContent();
+    } else {
+        animateModalContents('shaking');
     }
 }
 
