@@ -256,13 +256,31 @@ main ol li > ol {
 	list-style-type: lower-roman;
 }
 
+.directory-list {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 0.5rem;
+}
+
+.directory-list .preview-image {
+	object-fit: cover;
+	aspect-ratio: 1 / 1;
+	width: 100%;
+}
+
+.directory-list figcaption {
+	padding: 0.25rem 0;
+	text-transform: uppercase;
+}
+
 .link-list {
 	margin-left: 0;
 	column-count: auto;
-	column-width: 12rem;
+	column-width: 8rem;
 	column-gap: 0.5rem;
 }
 
+.directory-list li, 
 .link-list li {
 	margin-bottom: 0.5rem;
 	border: 1px dotted var(--text);
@@ -271,14 +289,10 @@ main ol li > ol {
 	page-break-inside: avoid;
 }
 
+.directory-list li a, 
 .link-list li a {
 	text-decoration: none;
 	display: block;
-}
-
-.link-list figcaption {
-	padding: 0.25rem 0;
-	text-transform: uppercase;
 }
 
 .media-list {
@@ -475,10 +489,6 @@ body.dragenter .upload-icon {
 		display: none;
 	}
 
-	.link-list {
-		column-width: 8rem;
-	}
-	
 	.media-list {
 		column-count: 2;
 	}

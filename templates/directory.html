@@ -16,14 +16,14 @@
     <main>
         <h1>{{title}}</h1>
         <section>
-            <ul class="link-list">
+            <ul class="directory-list">
                 {% for item in directory_list %}
                 <li>
                     {% if 'figure' in item %}
                     <a href="{{ item['link'] }}">
                         <figure>
                             {% if item['figure']['preview_path'] %}
-                                <img src="/{{ item['figure']['preview_path'] }}" alt="">
+                                <img class="preview-image" src="/{{ item['figure']['preview_path'] }}" alt="">
                             {% endif %}
                             <figcaption>{{ item['figure']['caption'] }}</figcaption>
                         </figure>

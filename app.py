@@ -12,6 +12,7 @@ import atexit
 
 app = Flask(__name__, static_url_path='')
 app.config['CONTENT_FOLDER'] = 'content'
+app.config['THUMBNAIL_FOLDER'] = 'thumbs'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload size
 
 # Constants
@@ -38,16 +39,6 @@ def listdir_by_modified(path):
     except Exception as e:
         print(f"Error: {e}")
         return None
-    
-def find_first_image_file(path):
-    files = listdir_by_modified(path)
-
-    for file in files:
-        _, file_extension = os.path.splitext(file)
-        if file_extension.lower() in IMAGE_EXTENSIONS:
-            return file
-
-    return None
 
 def get_nav_bar(current_location):
     root = os.listdir(CONTENT_PATH)
@@ -98,23 +89,17 @@ def view_directory(location):
             notes.append(file)
             continue
 
-        relative_path = os.path.join(location, file)
-        absolute_path = os.path.join(CONTENT_PATH, relative_path)
+        relative_file_path = os.path.join(location, file)
+        absolute_file_path = os.path.join(CONTENT_PATH, relative_file_path)
 
-        if not os.path.isdir(absolute_path):
-            files.append({'link': f"/view/{relative_path}", 'text': file})
+        if not os.path.isdir(absolute_file_path):
+            files.append({'link': f"/view/{relative_file_path}", 'text': file})
             continue
 
-        preview_src = ''
-
-        if (len(os.listdir(absolute_path)) > 0):
-            preview_image = find_first_image_file(absolute_path)
-            if preview_image:
-                image_path = os.path.join(relative_path, preview_image)
-                preview_src = os.path.join(app.config['CONTENT_FOLDER'], image_path)
+        preview_src = get_preview_image(relative_file_path)
 
         files.append({
-            'link': f"/view/{relative_path}",
+            'link': f"/view/{relative_file_path}",
             'figure': {
                 'preview_path': preview_src,
                 'caption': file.replace("-", " ")
@@ -126,9 +111,9 @@ def view_directory(location):
     tag_dictionary = {}
 
     for file in notes:
-        relative_path = os.path.join(location, file)
-        absolute_path = os.path.join(CONTENT_PATH, relative_path)
-        post = frontmatter.load(absolute_path)
+        relative_file_path = os.path.join(location, file)
+        absolute_file_path = os.path.join(CONTENT_PATH, relative_file_path)
+        post = frontmatter.load(absolute_file_path)
 
         # Really ugly but it works
         tags = post.get('tags', []) if isinstance(post.get('tags'), list) else \
@@ -137,7 +122,7 @@ def view_directory(location):
         for tag in tags:
             if tag not in tag_dictionary:
                 tag_dictionary[tag] = []
-            tag_dictionary[tag].append({'path': relative_path, 'post': post})
+            tag_dictionary[tag].append({'path': relative_file_path, 'post': post})
 
     return render_template(
         DIRECTORY_TEMPLATE,
@@ -146,6 +131,20 @@ def view_directory(location):
         directory_list=files,
         notes=tag_dictionary
     )
+
+def get_preview_image(location):
+    full_path = os.path.join(CONTENT_PATH, location)
+    if (not len(os.listdir(full_path)) > 0): return None
+    files = listdir_by_modified(full_path)
+
+    for file in files:
+        _, file_extension = os.path.splitext(file)
+        if file_extension.lower() in IMAGE_EXTENSIONS:
+            return os.path.join(app.config['CONTENT_FOLDER'], location, file)
+        if file_extension.lower() in VIDEO_EXTENSIONS:
+            return os.path.join(app.config['THUMBNAIL_FOLDER'], location, file)
+
+    return None
 
 # Pages with a lot of videos seem to be really slow, not exactly sure why...
 # Needs some investigating
