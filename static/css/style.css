@@ -169,14 +169,40 @@ pre > code {
 	}
 }
 
+@keyframes zoom-in {
+	0% {
+		transform: scale(0.8);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes zoom-out {
+	0% {
+		transform: scale(1);
+	}
+	100% {
+		transform: scale(0.8);
+	}
+}
+
 [opening] {
 	animation: fade-in 200ms forwards;
+}
+
+[opening] > * {
+	animation: zoom-in 200ms forwards;
 }
 
 [closing] {
 	animation: fade-out 400ms forwards;
 	pointer-events: none;
 	inset: 0;
+}
+
+[closing] > * {
+	animation: zoom-out 400ms forwards;
 }
 
 .hidden {

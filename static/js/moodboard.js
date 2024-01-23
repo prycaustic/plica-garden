@@ -22,7 +22,6 @@ function openImage(link) {
     modal.insertBefore(image, modal.firstChild);
     modalInfo.innerText = getCleanFileName(link.href);
     document.body.style.overflow = 'hidden';
-    animateModal('opening');
 };
 
 function openVideo(link) {
@@ -38,13 +37,13 @@ function openVideo(link) {
     modal.insertBefore(video, modal.firstChild);
     modalInfo.innerText = getCleanFileName(link.href);
     document.body.style.overflow = 'hidden';
-    animateModal('opening');
 };
 
 document.querySelectorAll('.image-link').forEach((element) => {
     element.addEventListener('click', (event) => {
         event.preventDefault();
         openImage(element);
+        animateModal('opening');
     });
 });
 
@@ -52,6 +51,7 @@ document.querySelectorAll('.video-link').forEach((element) => {
     element.addEventListener('click', (event) => {
         event.preventDefault();
         openVideo(element);
+        animateModal('opening');
     });
 });
 
