@@ -83,9 +83,9 @@ function updateModalContent() {
     let newItem = moodboardItems[currentItemIndex];
     
     clearModalContents();
-    if (newItem.tagName === 'IMG') {
+    if (newItem.classList.contains('image-link')) {
         openImage(newItem);
-    } else if (newItem.tagName === 'VIDEO') {
+    } else if (newItem.classList.contains('video-link')) {
         openVideo(newItem);
     }
 };
@@ -106,11 +106,71 @@ function showNextItem() {
 
 addEventListener('keydown', (e) => {
     if (!modal.classList.contains('hidden')) {
-        if (e.key === "ArrowLeft") {
-            showPreviousItem();
+        let contents = modal.firstChild;
+        let prevVolume = 1;
+
+        // Modal controls
+        if (document.fullscreenElement != contents) {
+            switch (e.key) {
+                case 'ArrowLeft':
+                    showPreviousItem();
+                    break;
+                case 'ArrowRight':
+                    showNextItem();
+                    break;
+                default:
+                    return;
+            }
         }
-        else if (e.key === "ArrowRight") {
-            showNextItem();
+
+        // Video controls
+        if (contents.nodeName === "VIDEO") {
+            switch (e.key) {
+                case 'f':
+                    contents.requestFullscreen();
+                    break;
+                case 'j':
+                    contents.currentTime -= 10;
+                    break;
+                case 'k':
+                    if (contents.paused)
+                        contents.play();
+                    else
+                        contents.pause();
+                    break;
+                case 'l':
+                    contents.currentTime += 10;
+                case 'ArrowLeft':
+                    contents.currentTime -= 5;
+                    break;
+                case 'ArrowRight':
+                    contents.currentTime += 5;
+                    break;
+                case 'm':
+                    if (contents.muted) {
+                        contents.muted = false;
+                        contents.volume = prevVolume
+                    } else {
+                        prevVolume = contents.volume;
+                        contents.muted = true;
+                    }
+                    break;
+                case 'ArrowUp':
+                    if (contents.muted)
+                        contents.muted = false;
+                    if (contents.volume < 1)
+                        contents.volume += 0.1;
+                    break;
+                case 'ArrowDown':
+                    console.log(contents.volume);
+                    if (contents.volume > 0.05)
+                        contents.volume -= 0.1;
+                    else
+                        contents.muted = true;
+                    break;
+                default:
+                    return;
+            }
         }
         e.preventDefault();
     }

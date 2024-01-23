@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, send_from_directory, jsonify, send_file
 from moviepy.editor import VideoFileClip
+import imageio
 import os
 import frontmatter
 import markdown
@@ -146,6 +147,8 @@ def view_directory(location):
         notes=tag_dictionary
     )
 
+# Pages with a lot of videos seem to be really slow, not exactly sure why...
+# Needs some investigating
 @app.route('/view/<path:location>')
 def view_file(location):
     absolute_path = os.path.join(CONTENT_PATH, location)
@@ -218,12 +221,12 @@ def get_image_size(image_path):
     
 def get_video_size(video_path):
     try:
-        clip = VideoFileClip(video_path)
-        width, height = clip.size
-        clip.close()
+        with imageio.get_reader(video_path) as reader:
+            metadata = reader.get_meta_data()
+            width, height = metadata['size']
         return width, height
     except Exception as e:
-        # Handle exceptions (e.g., invalid video path, etc.)
+        print(e)
         return None
 
 # Path for video thumbnails... kind of a really dumb solution but preload="metadata" doesn't work
