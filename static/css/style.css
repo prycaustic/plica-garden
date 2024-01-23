@@ -303,14 +303,14 @@ main ol li > ol {
 
 .media-list li .delete-button {
 	position: absolute;
-	top: 0;
-	right: 0;
+	top: 0.2rem;
+	right: 0.2rem;
 	background-color: #00000085;
 	color: #fff;
 	border: none;
-	padding: 5px 10px;
+	padding: 4px 8px;
 	cursor: pointer;
-	font-size: 14px;
+	font-size: 12px;
 	display: block;
 	opacity: 0;
 	transition: opacity 200ms;
