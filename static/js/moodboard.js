@@ -13,7 +13,6 @@ function getCleanFileName(filePath) {
 };
 
 function openImage(link) {
-    modal.classList.remove('hidden');
     currentItemIndex = parseInt(link.getAttribute('index'));
 
     let image = document.createElement('img');
@@ -22,10 +21,11 @@ function openImage(link) {
     
     modal.insertBefore(image, modal.firstChild);
     modalInfo.innerText = getCleanFileName(link.href);
+    document.body.style.overflow = 'hidden';
+    animateModal('opening');
 };
 
 function openVideo(link) {
-    modal.classList.remove('hidden');
     currentItemIndex = parseInt(link.getAttribute('index'));
 
     let video = document.createElement('video');
@@ -37,6 +37,8 @@ function openVideo(link) {
 
     modal.insertBefore(video, modal.firstChild);
     modalInfo.innerText = getCleanFileName(link.href);
+    document.body.style.overflow = 'hidden';
+    animateModal('opening');
 };
 
 document.querySelectorAll('.image-link').forEach((element) => {
@@ -66,15 +68,23 @@ function clearModalContents() {
     document.body.style.overflow = 'initial';
 }
 
-function hideModal() {
-    clearModalContents();
-    modal.classList.add('hidden');
+function animateModal(animation) {
+    modal.classList.remove('hidden');
     document.title = originalTitle;
+    modal.setAttribute(animation, '');
+    
+    modal.addEventListener('animationend', () => {
+        modal.removeAttribute(animation);
+        if (animation == 'closing') {
+            modal.classList.add('hidden');
+            clearModalContents();
+        }
+    }, {once: true});
 }
 
 window.onclick = function(event) {
     if (event.target === modal) {
-        hideModal();
+        animateModal('closing');
     }
 };
 
