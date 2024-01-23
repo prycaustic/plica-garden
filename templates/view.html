@@ -61,7 +61,7 @@
                             <img loading="lazy" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
                         </a>
                         {% endif %}
-                        <button class="delete-button rounded" onclick="deleteFile(this, '{{ item.src }}')" title="Delete">&#10006;</button>
+                        <button class="delete-button rounded" onclick="deleteFile(this, '{{ item.src }}')" title="Delete"><span class="icon material-symbols-sharp tiny">delete</span></button>
                     </li>
                 {% endfor %}
             </ul>

@@ -316,18 +316,18 @@ main ol li > ol {
 }
 
 .media-list li .delete-button {
+	padding: 1px;
 	position: absolute;
 	top: 0.2rem;
 	right: 0.2rem;
 	background-color: #00000085;
 	color: #fff;
 	border: none;
-	padding: 4px 8px;
 	cursor: pointer;
 	font-size: 12px;
 	display: block;
 	opacity: 0;
-	transition: opacity 200ms;
+	transition: background-color 200ms;
 }
 
 .media-list .video-with-filename p {
@@ -353,7 +353,7 @@ main ol li > ol {
 	transition: opacity 200ms;
 	margin: 0 auto;
 	cursor: pointer;
-	padding: 0.25rem;
+	padding: 4px;
 	vertical-align: bottom;
 	user-select: none;
 }
@@ -362,12 +362,12 @@ main ol li > ol {
 	font-size: 1.5rem;
 }
 
-.icon.dark {
-	color: var(--text);
+.icon.tiny {
+	font-size: 1rem;
 }
 
-.icon:hover {
-	opacity: 0.5;
+.icon.dark {
+	color: var(--text);
 }
 
 .rounded {
