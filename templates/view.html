@@ -51,11 +51,15 @@
                     {% else %}
                     <li class="rounded">
                     {% endif %}
-                        {% if 'poster' in item %}
-                        <video index="{{ item.index }}" class="block-context-menu" onclick="openVideo(this)" preload="none" poster="{{ item.poster }}" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}"></video>
+                        {% if 'thumbnail' in item %}
+                        <a class="block-context-menu video-link" index="{{ item.index }}" href="{{ item.src }}">
+                            <img  loading="lazy" src="{{ item.thumbnail }}" width="{{ item.width }}" height="{{ item.height }}" />
+                        </a>
                         <p>{{ item.title }}</p>
                         {% else %}
-                        <img index="{{ item.index }}" class="block-context-menu" onclick="openImage(this)" loading="lazy" alt="" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
+                        <a class="block-context-menu image-link" index="{{ item.index }}" href="{{ item.src }}">
+                            <img loading="lazy" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
+                        </a>
                         {% endif %}
                         <button class="delete-button" onclick="deleteFile(this, '{{ item.src }}')" title="Delete">&#10006;</button>
                     </li>

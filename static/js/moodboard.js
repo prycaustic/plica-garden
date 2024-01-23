@@ -12,30 +12,46 @@ function getCleanFileName(filePath) {
     return fileName;
 };
 
-function openImage(img) {
+function openImage(link) {
     modal.classList.remove('hidden');
-    let clone = img.cloneNode(true);
-    clone.setAttribute('id', 'modal-image');
-    clone.removeAttribute('onclick');
-    clone.classList.remove('block-context-menu');
-    modal.insertBefore(clone, modal.firstChild);
-    currentItemIndex = parseInt(img.getAttribute('index'));
-    modalInfo.innerText = getCleanFileName(img.src);
+    currentItemIndex = parseInt(link.getAttribute('index'));
+
+    let image = document.createElement('img');
+    image.setAttribute('id', 'modal-image');
+    image.setAttribute('src', link.href);
+    
+    modal.insertBefore(image, modal.firstChild);
+    modalInfo.innerText = getCleanFileName(link.href);
 };
 
-function openVideo(video) {
+function openVideo(link) {
     modal.classList.remove('hidden');
-    currentItemIndex = parseInt(video.getAttribute('index'));
-    let clone = video.cloneNode(true);
-    clone.setAttribute('id', 'modal-video');
-    clone.setAttribute('autoplay', 'true');
-    clone.setAttribute('loop', 'true');
-    clone.setAttribute('controls', 'true');
-    clone.removeAttribute('onclick');
-    clone.classList.remove('block-context-menu');
-    modal.insertBefore(clone, modal.firstChild);
-    modalInfo.innerText = getCleanFileName(clone.src);
+    currentItemIndex = parseInt(link.getAttribute('index'));
+
+    let video = document.createElement('video');
+    video.setAttribute('id', 'modal-video');
+    video.setAttribute('autoplay', 'true');
+    video.setAttribute('loop', 'true');
+    video.setAttribute('controls', 'true');
+    video.src = link.href;
+
+    modal.insertBefore(video, modal.firstChild);
+    modalInfo.innerText = getCleanFileName(link.href);
 };
+
+document.querySelectorAll('.image-link').forEach((element) => {
+    element.addEventListener('click', (event) => {
+        event.preventDefault();
+        openImage(element);
+    });
+});
+
+document.querySelectorAll('.video-link').forEach((element) => {
+    element.addEventListener('click', (event) => {
+        event.preventDefault();
+        openVideo(element);
+    });
+});
 
 // Hide the modal
 function clearModalContents() {

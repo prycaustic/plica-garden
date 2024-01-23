@@ -178,7 +178,7 @@ def view_file(location):
                     'title': file,
                     'index': index,
                     'src': f"/{src_path}",
-                    'poster': f"/thumbs/{file_path}",
+                    'thumbnail': f"/thumbs/{file_path}",
                     'width': dimensions[0],
                     'height': dimensions[1]
                 })
