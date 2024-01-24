@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preload" href="/fonts/MaterialSymbolsSharp.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/fonts/Octicons.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <title>{{title}}</title>
@@ -17,25 +17,14 @@
     <main>
         <aside id="modal" class="hidden">
             <p id="modal-info"></p>
-            <span class="icon material-symbols-sharp hidden" title="Upload">Upload</span>
+            <span class="icon icon-upload hidden" title="Upload">Upload</span>
         </aside>
         <header>
             <h1>{{title}}</h1>
             {% if moodboard %}
             <ul id="moodboard-actions" class="rounded">
-                <!--
-                <li title="Edit moodboard">
-                    <label for="moodboard-edit"><span class="icon material-symbols-sharp small dark">edit</span><span class="visually-hidden">Edit moodboard</span></label>
-                    <form id="moodboard-edit" class="rounded">
-                        <legend>Edit moodboard</legend>
-                        <label for="moodboard-edit-name">Name</label>
-                        <input type="text" id="moodboard-edit-name" value="{{ title }}" />
-                        <label for="moodboard-delete"><span class="icon material-symbols-sharp small dark">delete</span></label>
-                    </form>
-                </li>
-                -->
                 <li title="Upload files">
-                    <label for="moodboard-upload"><span class="icon material-symbols-sharp small dark">upload</span><span class="visually-hidden">Upload files</span></label>
+                    <label for="moodboard-upload"><i class="icon icon-upload"></i></label>
                     <input type="file" id="moodboard-upload" accept=".md, image/*, video/*" multiple class="hidden" />
                 </li>
             </ul>
@@ -61,7 +50,7 @@
                             <img loading="lazy" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
                         </a>
                         {% endif %}
-                        <button class="delete-button rounded" onclick="deleteFile(this, '{{ item.src }}')" title="Delete"><span class="icon material-symbols-sharp tiny">delete</span></button>
+                        <button class="delete-button rounded" onclick="deleteFile(this, '{{ item.src }}')" title="Delete"><i class="icon icon-close small light"></i></button>
                     </li>
                 {% endfor %}
             </ul>

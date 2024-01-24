@@ -1,0 +1,42 @@
+@font-face {
+    font-family: "Octicons";
+    src: url("./Octicons.eot?a37a6019e5354537e662fd94eb104be4#iefix") format("embedded-opentype"),
+url("./Octicons.woff2?a37a6019e5354537e662fd94eb104be4") format("woff2"),
+url("./Octicons.woff?a37a6019e5354537e662fd94eb104be4") format("woff");
+}
+
+i[class^="icon-"]:before, i[class*=" icon-"]:before {
+    font-family: Octicons !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-close:before {
+    content: "\f101";
+}
+.icon-edit:before {
+    content: "\f102";
+}
+.icon-eye-closed:before {
+    content: "\f103";
+}
+.icon-eye:before {
+    content: "\f104";
+}
+.icon-gear:before {
+    content: "\f105";
+}
+.icon-kebab-horizontal:before {
+    content: "\f106";
+}
+.icon-three-bars:before {
+    content: "\f107";
+}
+.icon-upload:before {
+    content: "\f108";
+}
