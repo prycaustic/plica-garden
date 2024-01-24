@@ -190,7 +190,7 @@ pre > code {
 
 body {
 	display: grid;
-	grid-template-columns: [full-start] 1fr [content-start] minmax(12rem, 40rem) [content-end gutter-start] minmax(3rem, 1fr) [gutter-end full-end];
+	grid-template-columns: [full-start] 1fr [content-start] minmax(12rem, 80%) [content-end gutter-start] minmax(3rem, 1fr) [gutter-end full-end];
 }
 
 body > header {
@@ -295,9 +295,15 @@ main ol li > ol {
 }
 
 .directory-list {
+	margin: 0;
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(auto-fit, 10rem);
 	grid-gap: 0.5rem;
+}
+
+/* ONLY AUTO FIT IF THERE ARE ENOUGH CHILDREN TO SHOW */
+.directory-list:has(> *:nth-child(5)) {
+	grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
 }
 
 .link-list, .media-list {
@@ -309,7 +315,7 @@ main ol li > ol {
 }
 
 .media-list {
-	column-width: 12rem;
+	column-width: 10rem;
 }
 
 .directory-list .preview-image {
