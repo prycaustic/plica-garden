@@ -190,7 +190,7 @@ pre > code {
 
 body {
 	display: grid;
-	grid-template-columns: [full-start] 1fr [content-start] minmax(12rem, 40rem) [content-end gutter-start] minmax(12rem, 1fr) [gutter-end full-end];
+	grid-template-columns: [full-start] 1fr [content-start] minmax(12rem, 40rem) [content-end gutter-start] minmax(3rem, 1fr) [gutter-end full-end];
 }
 
 body > header {
@@ -414,14 +414,14 @@ main ol li > ol {
 
 /* FOOTER */
 footer {
+	position: relative;
 	grid-column: gutter;
+	padding: 1rem;
 }
 
 /* SETTINGS MENU */
 #settings-label {
-	position: absolute;
-	top: 1rem;
-	right: 1rem;
+	float: right;
 }
 
 #settings-label:hover i {
@@ -431,7 +431,10 @@ footer {
 
 /* TODO: finish styling this guy... */
 #settings-menu {
-	width: 80%;
+	position: fixed;
+	top: 3rem;
+	right: 1rem;
+	width: 12rem;
 	padding: 0.5rem;
 	background-color: white;
 	display: grid;
