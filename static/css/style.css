@@ -190,7 +190,7 @@ pre > code {
 
 body {
 	display: grid;
-	grid-template-columns: [full-start] 12rem [content-start] minmax(min-content, 5fr) [content-end gutter-start] 3rem [gutter-end full-end];
+	grid-template-columns: [full-start] 12rem [content-start] minmax(min-content, 5fr) [content-end gutter-start] min-content [gutter-end full-end];
 }
 
 body > header {
@@ -419,14 +419,16 @@ main ol li > ol {
 
 /* FOOTER */
 footer {
-	position: relative;
+	position: sticky;
 	grid-column: gutter;
 	padding: 1rem;
 }
 
 /* SETTINGS MENU */
 #settings-label {
-	float: right;
+	display: block;
+	position: sticky;
+	top: 1rem;
 }
 
 #settings-label:hover i {

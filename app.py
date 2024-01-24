@@ -221,6 +221,7 @@ def get_video_size(video_path):
     try:
         with imageio.get_reader(video_path) as reader:
             metadata = reader.get_meta_data()
+            print(metadata['size'])
             width, height = metadata['size']
         return width, height
     except Exception as e:
