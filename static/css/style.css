@@ -190,11 +190,10 @@ pre > code {
 
 body {
 	display: grid;
-	grid-template-columns: [full-start] 1fr [content-start] minmax(12rem, 80%) [content-end gutter-start] minmax(3rem, 1fr) [gutter-end full-end];
+	grid-template-columns: [full-start] 12rem [content-start] minmax(min-content, 5fr) [content-end gutter-start] 3rem [gutter-end full-end];
 }
 
 body > header {
-	min-width: 10rem;
 	display: block;
 	margin: 1rem;
 }
@@ -595,6 +594,7 @@ body.dragenter .upload-icon {
 
 	.media-list {
 		column-count: 2;
+		column-width: auto;
 	}
 
 	#modal-image, #modal-video {
