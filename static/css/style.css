@@ -190,7 +190,7 @@ pre > code {
 
 body {
 	display: grid;
-	grid-template-columns: [full-start] 1fr [content-start] 40rem [content-end] 1fr [full-end];
+	grid-template-columns: [full-start] 1fr [content-start] minmax(12rem, 40rem) [content-end gutter-start] minmax(12rem, 1fr) [gutter-end full-end];
 }
 
 body > header {
@@ -221,13 +221,18 @@ nav #current {
 }
 
 /* HAMBURGER MENU */
-#hamburger-label, body > header input[type='checkbox'] {
+.icon-checkbox + input[type='checkbox'] {
+	display: none;
+}
+
+#hamburger-label {
     display: none;
 }
 
+/* CONTENT */
 main {
+	grid-column: content;
 	margin: 1rem 0;
-	width: 40rem;
 }
 
 main > header {
@@ -295,6 +300,18 @@ main ol li > ol {
 	grid-gap: 0.5rem;
 }
 
+.link-list, .media-list {
+	margin-left: 0;
+	column-count: auto;
+	column-width: 8rem;
+	column-gap: 0.5rem;
+	user-select: none;
+}
+
+.media-list {
+	column-width: 12rem;
+}
+
 .directory-list .preview-image {
 	object-fit: cover;
 	aspect-ratio: 1 / 1;
@@ -304,13 +321,6 @@ main ol li > ol {
 .directory-list figcaption {
 	padding: 0.25rem 0;
 	text-transform: uppercase;
-}
-
-.link-list {
-	margin-left: 0;
-	column-count: auto;
-	column-width: 8rem;
-	column-gap: 0.5rem;
 }
 
 .directory-list li, 
@@ -326,13 +336,6 @@ main ol li > ol {
 .link-list li a {
 	text-decoration: none;
 	display: block;
-}
-
-.media-list {
-	column-count: 4;
-	grid-gap: 0.5rem;
-	user-select: none;
-	margin-left: 0;
 }
 
 .media-list li {
@@ -403,6 +406,50 @@ main ol li > ol {
 
 .rounded {
 	border-radius: 0.2rem;
+}
+
+.shadow {
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* FOOTER */
+footer {
+	grid-column: gutter;
+}
+
+/* SETTINGS MENU */
+#settings-label {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+}
+
+#settings-label:hover i {
+	transform: rotate(60deg);
+	transition: transform 200ms;
+}
+
+/* TODO: finish styling this guy... */
+#settings-menu {
+	width: 80%;
+	padding: 0.5rem;
+	background-color: white;
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	gap: 0.5rem 1rem;
+}
+
+#settings-menu .legend {
+	grid-column: span 2;
+}
+
+#settings-menu input {
+	display: block;
+	text-align: right;
+}
+
+#settings-menu-toggle[type='checkbox']:not(:checked) + #settings-menu {
+	display: none;
 }
 
 /* IMAGE MODALS */
