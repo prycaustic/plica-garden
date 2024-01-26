@@ -69,14 +69,14 @@ function clearModalContents() {
 }
 
 function animateModal(animation) {
-    modal.classList.remove('hidden');
+    modal.showModal();
     document.title = originalTitle;
     modal.setAttribute(animation, '');
     
     modal.addEventListener('animationend', () => {
         modal.removeAttribute(animation);
         if (animation == 'closing') {
-            modal.classList.add('hidden');
+            modal.close();
             clearModalContents();
         }
     }, {once: true});
