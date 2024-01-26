@@ -1,3 +1,13 @@
+
+function createSwitch(label, name) {
+    let switchTemplate = '\n<label for="{{name}}" class="switch">{{label}}'
+                        + '\n<input id="{{name}}" type="checkbox" />'
+                        + '\n<span class="slider"></span></label>';
+    switchTemplate = switchTemplate.replace('{{label}}', label);
+    switchTemplate = switchTemplate.replaceAll('{{name}}', name);
+    return switchTemplate;
+}
+
 window.addEventListener('load', () => {
     let footer = document.querySelector("footer");
     let menu = '';
@@ -9,10 +19,8 @@ window.addEventListener('load', () => {
     menu += '\n<i class="icon icon-close close-button"></i>';
     menu += '\n<section id="settings-menu-wrapper">';
     menu += '\n<span class="legend">Settings</span>';
-    menu += '\n<label for="show-hidden-dirs">Show hidden folders</label>';
-    menu += '\n<input id="show-hidden-dirs" type="checkbox" />';
-    menu += '\n<label for="show-hidden-files">Show hidden files</label>';
-    menu += '\n<input id="show-hidden-files" type="checkbox" />';
+    menu += createSwitch('Show hidden folders', 'show-hidden-dirs');
+    menu += createSwitch('Show hidden files', 'show-hidden-files');
     menu += '\n</section>';
     menu += '\n</dialog>';
     footer.innerHTML += menu;

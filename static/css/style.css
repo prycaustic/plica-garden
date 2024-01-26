@@ -15,6 +15,7 @@ html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abb
 	--accent-light: hsla(333, 45%, 76%, 1);
 	--accent-dark: lightgrey;
 	--black: hsla(324, 50%, 4%, 1);
+	--clover-green: #77b255;
 }
 
 /* Default to light theme */
@@ -447,7 +448,6 @@ footer {
 
 #settings-menu {
 	font-family: 'Roboto', sans-serif;
-	font-size: 0.8rem;
 	width: 18rem;
 	padding: 1rem;
 	background-color: white;
@@ -456,13 +456,13 @@ footer {
 
 #settings-menu .close-button {
 	position: absolute;
-	top: 0.25rem;
-	right: 0.25rem;
+	top: 0.5rem;
+	right: 0.5rem;
 }
 
 #settings-menu-wrapper {
-	display: grid;
-	grid-template-columns: 1fr 1.2rem;
+	display: flex;
+	flex-direction: column;
 	gap: 0.5rem;
 }
 
@@ -473,9 +473,51 @@ footer {
 	grid-column: span 2;
 }
 
-#settings-menu input {
-	display: block;
-	text-align: right;
+.switch {
+	--width: 2rem;
+	--height: 1rem;
+	--border-radius: calc(var(--height) / 2);
+	--padding: 0.1rem;
+
+	position: relative;
+	user-select: none;
+}
+
+.switch input {
+	display: none;
+}
+
+.switch input:checked ~ .slider {
+	background: var(--clover-green);
+}
+
+.switch input:checked ~ .slider::after {
+	transform: translateX(calc(var(--width) - var(--height)));
+}
+
+.switch > .slider {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	width: var(--width);
+	height: var(--height);
+	border-radius: var(--border-radius);
+	background: #ddd;
+	transition: background-color 200ms;
+}
+
+.switch > .slider::after {
+	content: '';
+	position: absolute;
+	top: var(--padding);
+	left: var(--padding);
+	width: calc(var(--height) - var(--padding) * 2);
+	height: calc(var(--height) - var(--padding) * 2);
+	border-radius: inherit;
+	background: white;
+	transition: transform 200ms;
 }
 
 /*#settings-menu-toggle[type='checkbox']:not(:checked) + #settings-menu {
