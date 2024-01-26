@@ -170,7 +170,7 @@ pre > code {
 	animation: fade-in 200ms forwards;
 }
 
-[opening]:first-child {
+[opening] > *:first-child {
 	animation: zoom-in 200ms forwards;
 }
 
@@ -180,7 +180,7 @@ pre > code {
 	inset: 0;
 }
 
-[closing]:first-child {
+[closing] > *:first-child {
 	animation: zoom-out 400ms forwards;
 }
 
@@ -494,6 +494,7 @@ dialog::backdrop {
 	max-width: 80%;
 	height: 100%;
 	max-height: 100%;
+	background: transparent;
 }
 
 #modal-info {
@@ -515,7 +516,7 @@ dialog::backdrop {
 }
 
 #file-upload-modal {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: transparent;
 	border: none;
 }
 
