@@ -135,7 +135,6 @@ addEventListener('keydown', (e) => {
 
     // Modal controls
     if (document.fullscreenElement == contents) {
-        e.preventDefault();
         if (e.key == 'f')
             document.exitFullscreen();
         if (contents.nodeName == 'IMG')
@@ -143,7 +142,6 @@ addEventListener('keydown', (e) => {
         if (contents.nodeName == 'VIDEO')
             handleFullscreenVideo(contents, e.key);
     } else {
-        e.preventDefault();
         switch (e.key) {
             case 'f':
                 contents.requestFullscreen();
