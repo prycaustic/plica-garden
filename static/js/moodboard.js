@@ -1,6 +1,7 @@
 // Image and video viewer
 let modal = document.getElementById('modal');
 let modalInfo = document.getElementById('modal-info');
+let uploadModal = document.getElementById('file-upload-modal');
 let originalTitle = document.title;
 let currentItemIndex = 0;
 let moodboardItems = document.querySelectorAll('[index]');
@@ -317,22 +318,20 @@ window.addEventListener('load', () => {
         return;
     }
 
-    document.addEventListener('dragover', function (e) {
-        e.stopPropagation();
+    document.addEventListener('dragover', (e) => {
         e.preventDefault();
-        document.body.classList.add('dragenter');
+        uploadModal.showModal();
     });
 
-    document.addEventListener('dragleave', function (e) {
-        e.stopPropagation();
+    document.addEventListener('dragleave', (e) => {
         e.preventDefault();
-        document.body.classList.remove('dragenter');
+        uploadModal.close();
     });
 
-    document.addEventListener('drop', function (e) {
+    document.addEventListener('drop', (e) => {
         e.preventDefault();
         handleDrop(e.dataTransfer.files);
-        document.body.classList.remove('dragenter');
+        uploadModal.close();
     });
 
     let uploadInput = document.querySelector('#moodboard-upload');

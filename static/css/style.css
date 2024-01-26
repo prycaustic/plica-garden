@@ -401,6 +401,10 @@ main ol li > ol {
 	display: block;
 }
 
+.icon.large {
+	font-size: 48px;
+}
+
 .icon.small {
 	font-size: 16px;
 }
@@ -480,7 +484,7 @@ footer {
 	animation: shake 0.2s ease-in-out forwards;
 }
 
-#modal::backdrop {
+dialog::backdrop {
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -510,9 +514,9 @@ footer {
 	height: 100%;
 }
 
-body.dragenter #modal,
-body.dragenter .upload-icon {
-	display: flex !important;
+#file-upload-modal {
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
 }
 
 @media only screen and (max-width: 767px) {
