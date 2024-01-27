@@ -329,14 +329,9 @@ main ol li > ol {
 
 .media-list li {
 	position: relative;
-	width: 100%;
 	margin-bottom: 0.5rem;
 	overflow: hidden;
 	background: linear-gradient(to bottom, #b5ada1, var(--accent));
-}
-
-.media-list li img {
-	width: 100%;
 }
 
 .media-list li .edit-button {
@@ -344,14 +339,8 @@ main ol li > ol {
 	position: absolute;
 	top: 0.2rem;
 	right: 0.2rem;
-	background-color: #00000085;
-	color: #fff;
-	border: none;
-	cursor: pointer;
-	font-size: 12px;
-	display: block;
 	opacity: 0;
-	transition: background-color 200ms;
+	background-color: rgba(0, 0, 0, 0.8);
 }
 
 .media-list .video-with-filename p {
