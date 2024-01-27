@@ -39,6 +39,13 @@ def listdir_by_modified(path):
     except Exception as e:
         print(f"Error: {e}")
         return None
+    
+def listdir_by_alpha(path):
+    try:
+        return sorted(os.listdir(path), key=lambda file: file.lower())
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
 
 def get_nav_bar(current_location):
     root = os.listdir(CONTENT_PATH)
@@ -153,6 +160,8 @@ def view_file(location):
 
     # If the page is a directory, create a moodboard with the media files
     if os.path.isdir(absolute_path):
+        parent_directory = os.path.join(CONTENT_PATH, os.path.dirname(location))
+        adjacent_directories = [directory.replace('-', ' ') for directory in listdir_by_alpha(parent_directory) if os.path.isdir(os.path.join(parent_directory, directory))]
         pretty_title = os.path.basename(location).replace('-', ' ')
         files = listdir_by_modified(absolute_path)
         media = []
@@ -189,7 +198,8 @@ def view_file(location):
             nav=get_nav_bar(location.split("/")[0]),
             title=pretty_title,
             media_list=media,
-            moodboard=True
+            moodboard=True,
+            sibling_boards=adjacent_directories
         )
     # If it's a note, show the note
     elif os.path.isfile(absolute_path):
@@ -221,7 +231,6 @@ def get_video_size(video_path):
     try:
         with imageio.get_reader(video_path) as reader:
             metadata = reader.get_meta_data()
-            print(metadata['size'])
             width, height = metadata['size']
         return width, height
     except Exception as e:

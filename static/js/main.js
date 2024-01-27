@@ -8,6 +8,14 @@ function createSwitch(label, name) {
     return switchTemplate;
 }
 
+function closeDialog() {
+    // Close any open dialogs
+    let openDialogs = document.querySelectorAll('dialog[open]');
+    openDialogs.forEach((dialog) => {
+        dialog.close();
+    });
+}
+
 window.addEventListener('load', () => {
     let footer = document.querySelector("footer");
     let menu = '';
@@ -16,7 +24,7 @@ window.addEventListener('load', () => {
     menu += '\n<label id="settings-label" class="icon-checkbox" for="settings-menu-toggle"><i class="icon icon-gear dark"></i></label>';
     menu += '\n<input id="settings-menu-toggle" type="checkbox" />';
     menu += '\n<dialog id="settings-menu" class="rounded shadow">';
-    menu += '\n<i class="icon icon-close close-button"></i>';
+    menu += '\n<i class="icon icon-close close-button" onclick="closeDialog()"></i>';
     menu += '\n<section id="settings-menu-wrapper">';
     menu += '\n<span class="legend">Settings</span>';
     menu += createSwitch('Show hidden folders', 'show-hidden-dirs');
@@ -29,7 +37,7 @@ window.addEventListener('load', () => {
     closeButton = settingsMenu.querySelector('.icon-close');
 
     closeButton.addEventListener('click', () => {
-        settingsMenu.close();
+        ;
     });
 
     settingsToggle = document.getElementById('settings-menu-toggle');

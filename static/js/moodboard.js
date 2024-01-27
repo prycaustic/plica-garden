@@ -308,6 +308,21 @@ async function deleteFile(button, contentPath) {
     }
 };
 
+// File editing menu
+function editFile(contentPath) {
+    // Show edit dialog menu
+    let editDialog = document.getElementById('file-edit-dialog');
+    editDialog.showModal();
+
+    // Populate the form with the current file name
+    let editForm = document.getElementById('file-edit-form');
+    let editName = document.getElementById('file-edit-name');
+    // Get the file name from the URL
+    let fileName = contentPath.split('/').pop();
+    fileName = fileName.split('.').slice(0, -1).join('.');
+    editName.value = fileName;
+}
+
 window.addEventListener('load', () => {
     let moodboard = document.querySelector('#moodboard');
 

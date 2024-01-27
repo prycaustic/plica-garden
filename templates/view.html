@@ -24,6 +24,32 @@
         <dialog id="file-upload-modal">
             <i class="icon icon-upload large light" title="Upload"></i>
         </dialog>
+        <dialog id="file-edit-dialog" class="rounded dialog-with-input">
+            <form id="file-edit-form" action="POST" autocomplete="off">
+                <header>
+                    <span class="legend">Edit file</span>
+                    <i class="icon icon-close dark close-button" onclick="closeDialog()" title="Close"></i>
+                </header>
+                <fieldset class="inputs">
+                    <label for="file-edit-name">File name</label>
+                    <input id="file-edit-name" type="text" />
+                    <label for="file-edit-location">Location</label>
+                    <select id="file-edit-location">
+                    {% for board in sibling_boards %}
+                        {% if board == title %}
+                            <option value="" selected>{{ title }}</option>
+                        {% else %}
+                            <option value="{{ board }}">{{ board }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    </select>
+                </fieldset>
+                <fieldset class="footer">
+                    <button type="warning" onclick="deleteFile()">Delete</button>
+                    <button type="submit">Save</button>
+                </fieldset>
+            </form>
+        </dialog>
         <header>
             <h1>{{title}}</h1>
             {% if moodboard %}
@@ -55,7 +81,7 @@
                             <img loading="lazy" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
                         </a>
                         {% endif %}
-                        <button class="delete-button rounded" onclick="deleteFile(this, '{{ item.src }}')" title="Delete"><i class="icon icon-close small light"></i></button>
+                        <button class="edit-button circle" onclick="editFile('{{ item.src }}')" title="Edit"><i class="icon icon-edit small light"></i></button>
                     </li>
                 {% endfor %}
             </ul>
