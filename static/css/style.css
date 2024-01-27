@@ -433,14 +433,6 @@ footer {
 	padding: 1rem;
 }
 
-/* DIALOGS */
-dialog .legend {
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 1.25rem;
-	grid-column: span 2;
-}
-
 /* SETTINGS MENU */
 #settings-label {
 	display: block;
@@ -453,12 +445,19 @@ dialog .legend {
 	transition: transform 200ms;
 }
 
-/* TODO: finish styling this guy... */
-#settings-menu::backdrop {
-	background: rgba(0, 0, 0, 0.4);
+/* DIALOGS */
+dialog::backdrop {
+	background-color: rgba(0, 0, 0, 0.8);
 }
 
-#settings-menu {
+dialog .legend {
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 1.25rem;
+	grid-column: span 2;
+}
+
+.dialog-with-input {
 	font-family: 'Roboto', sans-serif;
 	width: 18rem;
 	padding: 1rem;
@@ -466,10 +465,62 @@ dialog .legend {
 	border: none;
 }
 
-#settings-menu-wrapper {
+.dialog-with-input form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.dialog-with-input form header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.dialog-with-input form fieldset.labeled-inputs {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	gap: 0.5rem;
+}
+
+.dialog-with-input form fieldset.inputs {
 	display: flex;
 	flex-direction: column;
 	gap: 0.5rem;
+}
+
+.dialog-with-input form fieldset.footer {
+	display: flex;
+	justify-content: space-between;
+}
+
+select {
+	display: inline-block;
+	border: none;
+	border-radius: 0.2rem;
+}
+
+button {
+	padding: 0.5rem;
+	border: none;
+	border-radius: 0.5rem;
+	color: var(--text);
+	cursor: pointer;
+	transition: background-color 200ms;
+}
+
+button[type='submit'] {
+	background-color: var(--clover-green);
+	color: white;
+}
+
+button[type='submit']:hover {
+	background-color: var(--clover-green-dark);
+}
+
+button[type='warning']:hover {
+	background-color: #c00;
+	color: white;
 }
 
 .switch {
@@ -478,8 +529,7 @@ dialog .legend {
 	--border-radius: calc(var(--height) / 2);
 	--padding: 0.15rem;
 
-	display: inline-block;
-	vertical-align: middle;
+	display: block;
 	position: relative;
 	user-select: none;
 }
@@ -519,65 +569,6 @@ dialog .legend {
 	border-radius: inherit;
 	background: white;
 	transition: transform 200ms;
-}
-
-/*#settings-menu-toggle[type='checkbox']:not(:checked) + #settings-menu {
-	display: none;
-}*/
-
-/* FILE EDIT DIALOG */
-.dialog-with-input {
-	font-family: 'Roboto', sans-serif;
-	width: 18rem;
-	padding: 1rem;
-	background-color: white;
-	border: none;
-}
-
-.dialog-with-input form {
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-}
-
-.dialog-with-input form header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.dialog-with-input form fieldset.inputs {
-	display: grid;
-	grid-template-columns: 1fr 2fr;
-	gap: 0.5rem;
-}
-
-.dialog-with-input form fieldset.footer {
-	display: flex;
-	justify-content: space-between;
-}
-
-button {
-	padding: 0.5rem;
-	border: none;
-	border-radius: 0.5rem;
-	color: var(--text);
-	cursor: pointer;
-	transition: background-color 200ms;
-}
-
-button[type='submit'] {
-	background-color: var(--clover-green);
-	color: white;
-}
-
-button[type='submit']:hover {
-	background-color: var(--clover-green-dark);
-}
-
-button[type='warning']:hover {
-	background-color: #c00;
-	color: white;
 }
 
 /* IMAGE MODALS */

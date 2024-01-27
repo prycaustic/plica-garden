@@ -17,28 +17,9 @@ function closeDialog() {
 }
 
 window.addEventListener('load', () => {
-    let footer = document.querySelector("footer");
-    let menu = '';
-
-    // There's gotta be a better way to build this lol
-    menu += '\n<label id="settings-label" class="icon-checkbox" for="settings-menu-toggle"><i class="icon icon-gear dark"></i></label>';
-    menu += '\n<input id="settings-menu-toggle" type="checkbox" />';
-    menu += '\n<dialog id="settings-menu" class="rounded shadow">';
-    menu += '\n<i class="icon icon-close close-button" onclick="closeDialog()"></i>';
-    menu += '\n<section id="settings-menu-wrapper">';
-    menu += '\n<span class="legend">Settings</span>';
-    menu += createSwitch('Show hidden folders', 'show-hidden-dirs');
-    menu += createSwitch('Show hidden files', 'show-hidden-files');
-    menu += '\n</section>';
-    menu += '\n</dialog>';
-    footer.innerHTML += menu;
     directories = document.querySelectorAll('.hidden-dir');
-    settingsMenu = document.getElementById('settings-menu');
+    settingsMenu = document.getElementById('settings-dialog');
     closeButton = settingsMenu.querySelector('.icon-close');
-
-    closeButton.addEventListener('click', () => {
-        ;
-    });
 
     settingsToggle = document.getElementById('settings-menu-toggle');
     settingsToggle.addEventListener('click', (e) => {

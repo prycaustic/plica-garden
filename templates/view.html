@@ -30,7 +30,7 @@
                     <span class="legend">Edit file</span>
                     <i class="icon icon-close dark close-button" onclick="closeDialog()" title="Close"></i>
                 </header>
-                <fieldset class="inputs">
+                <fieldset class="labeled-inputs">
                     <label for="file-edit-name">File name</label>
                     <input id="file-edit-name" type="text" />
                     <label for="file-edit-location">Location</label>
@@ -88,7 +88,28 @@
             {% endif %}
         </section>
     </main>
-    <footer></footer>
+    <footer>
+        <label id="settings-label" class="icon-checkbox" for="settings-menu-toggle"><i class="icon icon-gear dark"></i></label>
+        <input id="settings-menu-toggle" type="checkbox" />
+        <dialog id="settings-dialog" class="rounded shadow dialog-with-input">
+            <form>
+                <header>
+                    <span class="legend">Settings</span>
+                    <i class="icon icon-close close-button" onclick="closeDialog()"></i>
+                </header>
+                <fieldset class="inputs">
+                    <label for="show-hidden-dirs" class="switch">Show hidden folders
+                        <input id="show-hidden-dirs" type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <label for="show-hidden-files" class="switch">Show hidden files
+                        <input id="show-hidden-files" type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </fieldset>
+            </form>
+        </dialog>
+    </footer>
     <script src="/js/main.js"></script>
     <script src="/js/moodboard.js"></script>
 </body>
