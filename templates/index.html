@@ -9,14 +9,7 @@
     <title>plica-garden</title>
 </head>
 <body>
-    <header>
-        <section class="sticky">
-            <!--- TODO: fix the alignment -->
-            <label id="hamburger-label" class="icon-checkbox" for="nav-menu"><i class="icon icon-three-bars small dark"></i> PLICA GARDEN</label>
-            <input id="nav-menu" type="checkbox" />
-            {{nav | safe}}
-        </section>
-    </header>
+    {% include 'header.html' %}
     <main>
         <h1>Welcome!</h1>
         <p>To get started, please follow these steps:</p>
@@ -44,7 +37,7 @@
         <h2>Enjoy!</h2>
         <p>Now, you are ready to use the app! Feel free to explore and manage your notes and images effortlessly.</p>
     </main>
-    <footer></footer>
+    {% include 'footer.html' %}
     <script src="/js/main.js"></script>
 </body>
 </html>

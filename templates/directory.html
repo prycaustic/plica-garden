@@ -9,14 +9,7 @@
     <title>{{title}}</title>
 </head>
 <body>
-    <header>
-        <section class="sticky">
-            <!--- TODO: fix the alignment -->
-            <label id="hamburger-label" class="icon-checkbox" for="nav-menu"><i class="icon icon-three-bars small dark"></i> PLICA GARDEN</label>
-            <input id="nav-menu" type="checkbox" />
-            {{nav | safe}}
-        </section>
-    </header>
+    {% include 'header.html' %}
     <main>
         <h1>{{title}}</h1>
         <section>
@@ -58,7 +51,7 @@
         </section>
         {% endfor %}
     </main>
-    <footer></footer>
+    {% include 'footer.html' %}
     <script src="/js/main.js"></script>
 </body>
 </html>
