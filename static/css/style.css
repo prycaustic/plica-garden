@@ -309,7 +309,7 @@ main ol li > ol {
 .link-list, .media-list {
 	margin-left: 0;
 	column-count: auto;
-	column-width: 8rem;
+	column-width: 12rem;
 	column-gap: 0.5rem;
 	user-select: none;
 }
