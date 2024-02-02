@@ -82,7 +82,7 @@ def view_directory(location):
         return 'Location not found.', 404
 
     # Sort through notes and regular files / folders
-    contents = sorted(os.listdir(abs_location_path))
+    contents = listdir_by_alpha(abs_location_path)
     notes = []
     files = []
 
