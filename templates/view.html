@@ -43,43 +43,46 @@
                 </fieldset>
             </form>
         </dialog>
+        {% if content %}
+        <section class="content">
+            <header>
+                <h1>{{title}}</h1>
+            </header>
+            {{content | safe}}
+        </section>
+        {% endif %}
+        {% if moodboard %}
         <header>
             <h1>{{title}}</h1>
-            {% if moodboard %}
             <ul id="moodboard-actions" class="rounded">
                 <li title="Upload files">
                     <label for="moodboard-upload"><i class="icon icon-upload"></i></label>
                     <input type="file" id="moodboard-upload" accept=".md, image/*, video/*" multiple class="hidden" />
                 </li>
             </ul>
-            {% endif %}
         </header>
-        <section class="content">
-            {{content | safe}}
-            {% if moodboard %}
-            <ul id="moodboard" class="media-list">
-                {% for item in media_list %}
-                    <li class="rounded">
-                        {% if item.type == 'video' %}
-                        <a class="block-context-menu video-link" index="{{ item.index }}" href="{{ item.src }}">
-                            <img loading="lazy" src="{{ item.thumbnail }}" width="{{ item.width }}" height="{{ item.height }}" />
-                        </a>
-                        <p>{{ item.title }}</p>
-                        {% elif item.type == 'pdf' %}
-                        <a class="block-context-menu pdf-link" index="{{ item.index }}" href="{{ item.src }}">
-                            <img loading="lazy" src="{{ item.thumbnail }}" width="{{ item.width }}" height="{{ item.height }}" />
-                        </a>
-                        {% else %}
-                        <a class="block-context-menu image-link" index="{{ item.index }}" href="{{ item.src }}">
-                            <img loading="lazy" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
-                        </a>
-                        {% endif %}
-                        <button class="edit-button circle" onclick="editFile('{{ item.src }}')" title="Edit"><i class="icon icon-edit small light"></i></button>
-                    </li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </section>
+        <ul id="moodboard" class="media-list">
+            {% for item in media_list %}
+                <li class="rounded">
+                    {% if item.type == 'video' %}
+                    <a class="block-context-menu video-link" index="{{ item.index }}" href="{{ item.src }}">
+                        <img loading="lazy" src="{{ item.thumbnail }}" width="{{ item.width }}" height="{{ item.height }}" />
+                    </a>
+                    <p>{{ item.title }}</p>
+                    {% elif item.type == 'pdf' %}
+                    <a class="block-context-menu pdf-link" index="{{ item.index }}" href="{{ item.src }}">
+                        <img loading="lazy" src="{{ item.thumbnail }}" width="{{ item.width }}" height="{{ item.height }}" />
+                    </a>
+                    {% else %}
+                    <a class="block-context-menu image-link" index="{{ item.index }}" href="{{ item.src }}">
+                        <img loading="lazy" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
+                    </a>
+                    {% endif %}
+                    <button class="edit-button circle" onclick="editFile('{{ item.src }}')" title="Edit"><i class="icon icon-edit small light"></i></button>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </main>
     {% include 'footer.html' %}
     <script src="/js/main.js"></script>
