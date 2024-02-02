@@ -343,7 +343,7 @@ main ol li > ol {
 	background-color: rgba(0, 0, 0, 0.8);
 }
 
-.media-list .video-with-filename p {
+.media-list .video-link ~ p {
 	position: absolute;
 	bottom: 0;
 	width: 100%;

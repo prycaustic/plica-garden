@@ -7,8 +7,7 @@ import markdown
 from werkzeug.utils import secure_filename
 from PIL import Image
 import tempfile
-import shutil
-import atexit
+import fitz
 
 app = Flask(__name__, static_url_path='')
 app.config['CONTENT_FOLDER'] = 'content'
@@ -170,11 +169,12 @@ def view_file(location):
             if file.startswith('.'): continue
             file_path = os.path.join(location, file)
             absolute_path = os.path.join(CONTENT_PATH, file_path)
+            src_path = os.path.join(app.config['CONTENT_FOLDER'], file_path)
 
             if any(file.endswith(ext) for ext in IMAGE_EXTENSIONS):
-                src_path = os.path.join(app.config['CONTENT_FOLDER'], file_path)
                 dimensions = get_image_size(absolute_path)
                 media.append({
+                    'type': 'image',
                     'index': index,
                     'src': f"/{src_path}",
                     'width': dimensions[0],
@@ -182,15 +182,25 @@ def view_file(location):
                 })
 
             if any(file.endswith(ext) for ext in VIDEO_EXTENSIONS):
-                src_path = os.path.join(app.config['CONTENT_FOLDER'], file_path)
                 dimensions = get_video_size(absolute_path)
                 media.append({
+                    'type': 'video',
                     'title': file,
                     'index': index,
                     'src': f"/{src_path}",
                     'thumbnail': f"/thumbs/{file_path}",
                     'width': dimensions[0] if dimensions != None else 640,
                     'height': dimensions[1]  if dimensions != None else 360
+                })
+
+            if (file.endswith('.pdf')):
+                media.append({
+                    'type': 'pdf',
+                    'index': index,
+                    'src': f"/{src_path}",
+                    'thumbnail': f"/thumbs/{file_path}",
+                    'width': 200,
+                    'height': 200
                 })
 
         return render_template(
@@ -244,24 +254,33 @@ temp_dir = tempfile.mkdtemp()
 # atexit.register(shutil.rmtree, temp_dir, ignore_errors=True)    
 
 # This is SLOW AS BALLS!!! it works doe
-@app.route('/thumbs/<path:video_path>')
-def generate_thumbnail(video_path):
-    absolute_video_path = os.path.join(CONTENT_PATH, video_path)
-    video_file_name = os.path.splitext(os.path.basename(video_path))[0]
-    temp_thumbnail_path = os.path.join(temp_dir, f'{video_file_name}_thumb.jpg')
+@app.route('/thumbs/<path:file_path>')
+def generate_thumbnail(file_path):
+    absolute_file_path = os.path.join(CONTENT_PATH, file_path)
+    base_name = os.path.basename(file_path)
+    file_name = os.path.splitext(base_name)[0]
+    extension = os.path.splitext(base_name)[1]
+    temp_thumbnail_path = os.path.join(temp_dir, f'{file_name}_thumb.jpg')
 
     if os.path.exists(temp_thumbnail_path):
-        return send_file(temp_thumbnail_path, mimetype='image/jpeg', as_attachment=True, download_name=f'{video_file_name}_thumbnail.jpg')
+        return send_file(temp_thumbnail_path, mimetype='image/jpeg', as_attachment=True, download_name=temp_thumbnail_path)
 
     try:
-        clip = VideoFileClip(absolute_video_path)
+        # PDF DOCUMENTS
+        if (extension == '.pdf'):
+            print(fitz.__doc__)
+            doc = fitz.open(absolute_file_path)
+            page = doc.load_page(0)
+            pix = page.get_pixmap()
+            pix.save(temp_thumbnail_path, 'jpeg', 70)
+        # VIDEO FILES
+        elif (extension in VIDEO_EXTENSIONS):
+            clip = VideoFileClip(absolute_file_path)
+            halfway_time = clip.duration / 2
+            clip.save_frame(temp_thumbnail_path, halfway_time)
+            clip.close()
 
-        # Generate the thumbnail
-        halfway_time = clip.duration / 2
-        clip.save_frame(temp_thumbnail_path, halfway_time)
-        clip.close()
-
-        return send_file(temp_thumbnail_path, mimetype='image/jpeg', as_attachment=True, download_name=f'{video_file_name}_thumb.jpg')
+        return send_file(temp_thumbnail_path, mimetype='image/jpeg', as_attachment=True, download_name='thumbnail.jpg')
 
     except Exception as e:
         return str(e)

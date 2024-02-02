@@ -59,16 +59,16 @@
             {% if moodboard %}
             <ul id="moodboard" class="media-list">
                 {% for item in media_list %}
-                    {% if 'title' in item %}
-                    <li class="rounded video-with-filename" title="{{ item.title }}">
-                    {% else %}
                     <li class="rounded">
-                    {% endif %}
-                        {% if 'thumbnail' in item %}
+                        {% if item.type == 'video' %}
                         <a class="block-context-menu video-link" index="{{ item.index }}" href="{{ item.src }}">
                             <img loading="lazy" src="{{ item.thumbnail }}" width="{{ item.width }}" height="{{ item.height }}" />
                         </a>
                         <p>{{ item.title }}</p>
+                        {% elif item.type == 'pdf' %}
+                        <a class="block-context-menu pdf-link" index="{{ item.index }}" href="{{ item.src }}">
+                            <img loading="lazy" src="{{ item.thumbnail }}" width="{{ item.width }}" height="{{ item.height }}" />
+                        </a>
                         {% else %}
                         <a class="block-context-menu image-link" index="{{ item.index }}" href="{{ item.src }}">
                             <img loading="lazy" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
