@@ -283,28 +283,25 @@ function uploadFile(file) {
 };
 
 // File deletions
-async function deleteFile(button, contentPath) {
-    let listItem = button.parentNode;
-    let fileName = contentPath.replace('/content', '');
-    let userConfirmed = confirm(`Are you sure you want to delete the file '${fileName}'? This CANNOT be undone.`);
+async function deleteFile(contentPath) {
+    let listItem = document.querySelector(`[href='${contentPath}']`).parentNode;
+    let fileName = contentPath.replace('/content', '/delete');
 
-    if (userConfirmed) {
-        try {
-            let response = await fetch(`/delete${fileName}`, {
-                method: 'DELETE',
-            });
+    try {
+        let response = await fetch(`${fileName}`, {
+            method: 'DELETE',
+        });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            let result = await response.text();
-            if (result == 'File deleted successfully') {
-                listItem.remove();
-            }
-        } catch (error) {
-            console.error('Error:', error);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        let result = await response.text();
+        if (result == 'File deleted successfully') {
+            listItem.remove();
+        }
+    } catch (error) {
+        console.error('Error:', error);
     }
 };
 
@@ -313,6 +310,13 @@ function editFile(contentPath) {
     // Show edit dialog menu
     let editDialog = document.getElementById('file-edit-dialog');
     editDialog.showModal();
+
+    let deleteButton = document.getElementById('file-delete');
+    deleteButton.onclick = (e) => {
+        e.preventDefault();
+        deleteFile(contentPath);
+        editDialog.close();
+    };
 
     // Populate the form with the current file name
     let editForm = document.getElementById('file-edit-form');
