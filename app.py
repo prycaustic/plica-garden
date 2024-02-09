@@ -206,6 +206,7 @@ def view_file(location):
         return render_template(
             VIEW_TEMPLATE,
             nav=get_nav_bar(location.split("/")[0]),
+            page=location.split("/")[-2],
             title=pretty_title,
             media_list=media,
             moodboard=True,
@@ -303,33 +304,11 @@ def edit_file(file):
         # Get parameters from request
         new_name = request.form.get('file-edit-name')
         new_location = request.form.get('file-edit-location')
+        old_file_path = os.path.join(CONTENT_PATH, file)
+        new_file_path = os.path.join(CONTENT_PATH, new_location, new_name + os.path.splitext(file)[1])
 
-        # Check if new file location is different
-        if new_location and new_location != os.path.dirname(file):
-            # Move file to new location
-            try:
-                new_file_path = os.path.join(new_location, os.path.basename(new_name))
-                os.rename(file, new_file_path)
-                file = os.path.join(new_location, os.path.basename(file))
-            except OSError as e:
-                return jsonify({'error': str(e)}), 500
-
-        # Check if new file name is different
-        if new_name and new_name != os.path.basename(file):
-            # Rename file
-            try:
-                os.rename(file, os.path.join(os.path.dirname(file), new_name))
-                file = os.path.join(os.path.dirname(file), new_name)
-            except OSError as e:
-                return jsonify({'error': str(e)}), 500
-
-        # Write changes to the file
-        try:
-            with open(file, 'w') as f:
-                file_contents = os.read(os.path.join(CONTENT_PATH, file))
-                f.write(file_contents)
-        except OSError as e:
-            return jsonify({'error': str(e)}), 500
+        if new_name != os.path.basename(file) or new_location != os.path.dirname(file):
+            os.rename(old_file_path, new_file_path)
 
         return jsonify({'message': 'File edited successfully'}), 200
 
