@@ -160,8 +160,8 @@ def view_file(location):
     # If the page is a directory, create a moodboard with the media files
     if os.path.isdir(absolute_path):
         parent_directory = os.path.join(CONTENT_PATH, os.path.dirname(location))
-        adjacent_directories = [directory.replace('-', ' ') for directory in listdir_by_alpha(parent_directory) if os.path.isdir(os.path.join(parent_directory, directory))]
-        pretty_title = os.path.basename(location).replace('-', ' ')
+        adjacent_directories = [directory for directory in listdir_by_alpha(parent_directory) if os.path.isdir(os.path.join(parent_directory, directory))]
+        current_board = os.path.basename(location)
         files = listdir_by_modified(absolute_path)
         media = []
 
@@ -207,7 +207,8 @@ def view_file(location):
             VIEW_TEMPLATE,
             nav=get_nav_bar(location.split("/")[0]),
             page=location.split("/")[-2],
-            title=pretty_title,
+            title=current_board,
+            pretty_title=current_board.replace("-", " "),
             media_list=media,
             moodboard=True,
             sibling_boards=adjacent_directories
@@ -294,9 +295,9 @@ def upload_file(location):
     if file:
         filename = secure_filename(file.filename)
         file.save(os.path.join(destination_path, filename))
-        return jsonify({'message': 'File uploaded successfully'}), 200
+        return 'File uploaded successfully', 200
     else:
-        return jsonify({'message': 'No file provided'}), 400
+        return 'No file provided', 400
 
 @app.route('/edit/<path:file>', methods=['POST'])
 def edit_file(file):
@@ -310,7 +311,7 @@ def edit_file(file):
         if new_name != os.path.basename(file) or new_location != os.path.dirname(file):
             os.rename(old_file_path, new_file_path)
 
-        return jsonify({'message': 'File edited successfully'}), 200
+        return 'File edited successfully' if new_location == os.path.dirname(file) else 'File moved successfully', 200
 
 @app.route('/delete/<path:location>', methods=['DELETE'])
 def delete_file(location):

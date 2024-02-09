@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/fonts/Octicons.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <title>{{title}}</title>
+    <title>{{pretty_title}}</title>
 </head>
 <body>
     {% include 'header.html' %}
@@ -46,7 +46,7 @@
         {% if content %}
         <section class="content">
             <header>
-                <h1>{{title}}</h1>
+                <h1>{{pretty_title}}</h1>
             </header>
             {{content | safe}}
         </section>
@@ -78,7 +78,7 @@
                         <img loading="lazy" src="{{ item.src }}" width="{{ item.width }}" height="{{ item.height }}" />
                     </a>
                     {% endif %}
-                    <button class="edit-button circle" onclick="editFile('{{ item.src }}')" title="Edit"><i class="icon icon-edit small light"></i></button>
+                    <button class="edit-button circle" onclick="showFileEditMenu('{{ item.src }}')" title="Edit"><i class="icon icon-edit small light"></i></button>
                 </li>
             {% endfor %}
         </ul>

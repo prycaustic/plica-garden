@@ -305,9 +305,8 @@ async function deleteFile(contentPath) {
     }
 };
 
-// File editing menu
-function editFile(contentPath) {
-    // Show edit dialog menu
+// File edit menu
+function showFileEditMenu(contentPath) {
     let editDialog = document.getElementById('file-edit-dialog');
     editDialog.showModal();
 
@@ -328,23 +327,33 @@ function editFile(contentPath) {
     let editForm = document.getElementById('file-edit-form');
     editForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
-        let editPath = contentPath.replace('/content/', '/edit/');
-        const formData = new FormData(editForm);
+        editFile(contentPath, editForm);
+    });
+}
 
-        fetch(editPath, {
+async function editFile(contentPath, form) {
+    let listItem = document.querySelector(`[href='${contentPath}']`).parentNode;
+    let editPath = contentPath.replace('/content/', '/edit/');
+    let formData = new FormData(form);
+
+    try {
+        let response = await fetch(editPath, {
             method: 'POST',
             body: formData,
-        })
-        .then(response => {
-            if (!response.ok)
-                throw new Error('Network response was not OK');
-            location.reload();
-        })
-        .catch(error => {
-            console.error('Error during edit: ', error);
         });
-    });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        let result = await response.text();
+        console.log(result);
+        if (result == 'File moved successfully') {
+            listItem.remove();
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    };
 }
 
 window.addEventListener('load', () => {
