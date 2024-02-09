@@ -297,6 +297,42 @@ def upload_file(location):
     else:
         return jsonify({'message': 'No file provided'}), 400
 
+@app.route('/edit/<path:file>', methods=['POST'])
+def edit_file(file):
+    if request.method == 'POST':
+        # Get parameters from request
+        new_name = request.form.get('file-edit-name')
+        new_location = request.form.get('file-edit-location')
+
+        # Check if new file location is different
+        if new_location and new_location != os.path.dirname(file):
+            # Move file to new location
+            try:
+                new_file_path = os.path.join(new_location, os.path.basename(new_name))
+                os.rename(file, new_file_path)
+                file = os.path.join(new_location, os.path.basename(file))
+            except OSError as e:
+                return jsonify({'error': str(e)}), 500
+
+        # Check if new file name is different
+        if new_name and new_name != os.path.basename(file):
+            # Rename file
+            try:
+                os.rename(file, os.path.join(os.path.dirname(file), new_name))
+                file = os.path.join(os.path.dirname(file), new_name)
+            except OSError as e:
+                return jsonify({'error': str(e)}), 500
+
+        # Write changes to the file
+        try:
+            with open(file, 'w') as f:
+                file_contents = os.read(os.path.join(CONTENT_PATH, file))
+                f.write(file_contents)
+        except OSError as e:
+            return jsonify({'error': str(e)}), 500
+
+        return jsonify({'message': 'File edited successfully'}), 200
+
 @app.route('/delete/<path:location>', methods=['DELETE'])
 def delete_file(location):
     try:
