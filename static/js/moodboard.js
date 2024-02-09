@@ -328,6 +328,7 @@ function showFileEditMenu(contentPath) {
     editForm.addEventListener('submit', (e) => {
         e.preventDefault();
         editFile(contentPath, editForm);
+        editDialog.close();
     });
 }
 
@@ -350,6 +351,7 @@ async function editFile(contentPath, form) {
         console.log(result);
         if (result == 'File moved successfully') {
             listItem.remove();
+
         }
     } catch (error) {
         console.error('Error:', error);
