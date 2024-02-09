@@ -319,12 +319,32 @@ function editFile(contentPath) {
     };
 
     // Populate the form with the current file name
-    let editForm = document.getElementById('file-edit-form');
     let editName = document.getElementById('file-edit-name');
     // Get the file name from the URL
     let fileName = contentPath.split('/').pop();
     fileName = fileName.split('.').slice(0, -1).join('.');
     editName.value = fileName;
+
+    let editForm = document.getElementById('file-edit-form');
+    editForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        let editPath = contentPath.replace('/content/', '/edit/');
+        const formData = new FormData(editForm);
+
+        fetch(editPath, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok)
+                throw new Error('Network response was not OK');
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error during edit: ', error);
+        });
+    });
 }
 
 window.addEventListener('load', () => {

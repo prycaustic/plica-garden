@@ -18,21 +18,21 @@
             <i class="icon icon-upload large light" title="Upload"></i>
         </dialog>
         <dialog id="file-edit-dialog" class="rounded dialog-with-input">
-            <form id="file-edit-form" action="POST" autocomplete="off">
+            <form id="file-edit-form" autocomplete="off">
                 <header>
                     <span class="legend">Edit file</span>
                     <i class="icon icon-close dark close-button" onclick="closeDialog()" title="Close"></i>
                 </header>
                 <fieldset class="labeled-inputs">
                     <label for="file-edit-name">File name</label>
-                    <input id="file-edit-name" type="text" />
+                    <input id="file-edit-name" name="file-edit-name" type="text" />
                     <label for="file-edit-location">Location</label>
-                    <select id="file-edit-location">
+                    <select id="file-edit-location" name="file-edit-location">
                     {% for board in sibling_boards %}
                         {% if board == title %}
-                            <option value="" selected>{{ title }}</option>
+                            <option value="{{ page }}/{{ title }}" selected>{{ title }}</option>
                         {% else %}
-                            <option value="{{ board }}">{{ board }}</option>
+                            <option value="{{ page }}/{{ board }}">{{ board }}</option>
                         {% endif %}
                     {% endfor %}
                     </select>
